@@ -1,0 +1,9 @@
+@use '../abstracts/' as *;
+
+.header {
+   @include layout-template($background-color, $text-color, $text-color);
+}
+
+.footer {
+   @include layout-template($background-color, $text-color, $text-color);
+}

@@ -1,0 +1,9 @@
+@mixin layout-template($bg, $text, $outline) {
+   background-color: $bg;
+   color: $text;
+   outline: 0.2rem $outline solid;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   min-height: 10vh;
+}
