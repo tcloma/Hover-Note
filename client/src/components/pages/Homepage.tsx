@@ -13,9 +13,9 @@ const Homepage = () => {
    }
 
    const formData: IUserData = {
-      name: 'TestName',
-      age: 21,
-      username: 'TestUser'
+      name: 'Andor',
+      age: 27,
+      username: 'andlato'
    }
 
    const handleSubmit = () => {
