@@ -2,6 +2,9 @@
    "name": "react-template",
    "version": "0.1.0",
    "private": true,
+   "description": "Modular Markdown Sticky Notes",
+   "author": "Tyrone Cloma",
+   "license": "ISC",
    "main": "public/electron.ts",
    "dependencies": {
       "@testing-library/jest-dom": "^5.16.5",
