@@ -1,0 +1,25 @@
+@use '../abstracts' as *;
+
+.page {
+   @include page-template ($background-color, $text-color)
+
+}
+
+.form {
+   outline: 3px solid black;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   min-height: 60vh;
+   width: 50%;
+   padding: 0 2em;
+}
+
+.formButtons button{
+   width: 50%;
+   margin-bottom: 2em;
+}
+
+.nameInput input{
+   width: 50%;
+}

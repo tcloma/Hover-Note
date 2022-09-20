@@ -1,0 +1,20 @@
+@use '../abstracts/' as *;
+
+.page {
+   @include page-template($background-color, $text-color);
+   justify-content: flex-start;
+}
+
+.page h3 {
+   
+}
+
+.noteContainer {
+   outline: 1px solid black;
+   display: flex;
+   justify-content: space-evenly;
+   width: 100%;
+   height: 50vh;
+   padding: 2em;
+   gap: 1em;
+}

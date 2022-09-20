@@ -1,8 +1,8 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Homepage from './pages/Homepage';
+import LandingPage from './pages/LandingPage';
+import HomePage from './pages/HomePage';
 import Layout from './Layout';
-import '../styles/components/App.scss';
 
 const App = () => {
    const queryClient = new QueryClient()
@@ -12,7 +12,8 @@ const App = () => {
          <QueryClientProvider client={queryClient}>
             <Layout>
                <Routes>
-                  <Route path='/' element={<Homepage />} />
+                  <Route path='/' element={<LandingPage />} />
+                  <Route path='/home' element={<HomePage />} />
                </Routes>
             </Layout>
          </QueryClientProvider>
