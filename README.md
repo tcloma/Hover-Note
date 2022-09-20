@@ -1,12 +1,4 @@
-# Personal React Blank Template
+# `Hover`
+### Modular Markdown Sticky Notes
+##### An electron based, end to end TypeScript application
 
-### Feature List:
-- Layout Component
-- React Router
-- SCSS & CSS Modules
-- Structured Folder Hierarchy
-
-### To Add:
-- Redux
-- Typescript
-- React Query
