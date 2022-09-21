@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { getAllUsers, addNewUser } from '../../apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/components/LandingPage.module.scss';
+import React from 'react';
 
 type Props = {
 
