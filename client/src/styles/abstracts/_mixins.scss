@@ -9,7 +9,7 @@
 }
 
 @mixin page-template($bg, $text) {
-   background-color: $bg;
+   background: $bg;
    color: $text;
    font-size: calc(10px + 2vmin);
    min-height: 100vh;
@@ -18,4 +18,5 @@
    align-items: center;
    justify-content: center;
    text-align: center;
+   padding-top: 2em;
 }

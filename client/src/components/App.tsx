@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import NotePage from './pages/NotePage';
 import Layout from './Layout';
+import React from 'react';
 
 const App = () => {
    const queryClient = new QueryClient()

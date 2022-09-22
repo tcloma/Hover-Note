@@ -5,20 +5,26 @@
    "description": "Modular Markdown Sticky Notes",
    "author": "Tyrone Cloma",
    "license": "ISC",
-   "main": "public/electron.js",
+   "main": "./electron/electron.ts",
    "scripts": {
       "start": "vite",
       "build": "tsc && vite build",
       "preview": "vite preview",
-      "dev": "concurrently -k \"BROWSER=none yarn start\" \"yarn:electron\"",
+      "dev": "concurrently -k \"yarn start\" \"yarn:electron\"",
       "electron": "wait-on tcp:5173 && electron ."
    },
    "dependencies": {
+      "@fortawesome/fontawesome-svg-core": "^6.2.0",
+      "@fortawesome/free-regular-svg-icons": "^6.2.0",
+      "@fortawesome/free-solid-svg-icons": "^6.2.0",
+      "@fortawesome/react-fontawesome": "^0.2.0",
+      "babel-plugin-macros": "^3.1.0",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "react-query": "^3.39.2",
       "react-router-dom": "^6.4.0",
-      "sass": "^1.54.9"
+      "sass": "^1.54.9",
+      "vite-plugin-electron": "^0.9.3"
    },
    "devDependencies": {
       "@types/react": "^18.0.17",

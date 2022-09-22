@@ -18,6 +18,7 @@ const LandingPage = (props: Props) => {
 
    // States
    const [whichForm, setWhichForm] = useState('signup')
+   const [displayForm, setDisplayForm] = useState(false)
 
    // Data Interaces
    interface IUserData {
@@ -50,24 +51,27 @@ const LandingPage = (props: Props) => {
 
    return (
       <div className={styles.page}>
-         <h1> Welcome to Hover </h1>
-         <form className={styles.form}>
-            <div className={styles.formButtons}>
-               <button onClick={(e) => handleLoginButtonClick(e)}> Login </button>
-               <button onClick={(e) => handleSignupButtonClick(e)}> Singup </button>
-            </div>
-            {
-               whichForm === 'login' ? null
+         <h1> Welcome to <span className={styles.titletext}>Hover</span> </h1>
+         {!displayForm ? <h6 onClick={() => setDisplayForm(true)}> Click to continue </h6>
+            : 
+            <form className={styles.form}>
+               <div className={styles.formButtons}>
+                  <button onClick={(e) => handleLoginButtonClick(e)}> Login </button>
+                  <button onClick={(e) => handleSignupButtonClick(e)}> Singup </button>
+               </div>
+
+               {whichForm === 'login' ? null
                   :
                   <div className={styles.nameInput}>
                      <input type='text' placeholder='First name' />
                      <input type='text' placeholder='Last name' />
                   </div>
-            }
-            <input type='text' placeholder='Email' />
-            <input type='password' placeholder='Password' />
-            <button onClick={(e) => handleSubmit(e)}> Submit </button>
-         </form >
+               }
+               <input type='text' placeholder='Email' />
+               <input type='password' placeholder='Password' />
+               <button onClick={(e) => handleSubmit(e)}> Submit </button>
+            </form >
+         }
       </div >
    )
 }

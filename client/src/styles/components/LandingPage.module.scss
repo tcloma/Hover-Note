@@ -1,12 +1,22 @@
 @use '../abstracts' as *;
 
 .page {
-   @include page-template ($background-color, $text-color)
+   @include page-template($background-color, $text-color);
+}
 
+.page h6 {
+   color: grey;
+}
+
+.titletext {
+   background: linear-gradient(to right, $red, $blue, $green);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
 }
 
 .form {
-   outline: 3px solid black;
+   background-color: $lighter-background;
+   border-top: 0.1em solid #a1a1a1ff;
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -15,11 +25,11 @@
    padding: 0 2em;
 }
 
-.formButtons button{
+.formButtons button {
    width: 50%;
    margin-bottom: 2em;
 }
 
-.nameInput input{
+.nameInput input {
    width: 50%;
 }
