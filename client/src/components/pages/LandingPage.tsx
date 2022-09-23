@@ -13,8 +13,8 @@ const LandingPage = (props: Props) => {
    const navigate = useNavigate()
 
    // GET and POST methods for use signups
-   const { status, error, data: users } = getAllUsers()
-   const { mutate: addUser } = addNewUser()
+   // const { status, error, data: users } = getAllUsers()
+   // const { mutate: addUser } = addNewUser()
 
    // States
    const [whichForm, setWhichForm] = useState('signup')

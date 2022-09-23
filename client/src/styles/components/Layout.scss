@@ -16,10 +16,12 @@
    height: 2.5em;
    background-color: $lighter-background;
    color: $text-color;
-   position: absolute;
+   position: fixed;
+   // top: 0;
    width: 100%;
    user-select: none;
    -webkit-app-region: drag;
+   box-shadow: 1px 1px 20px $lighter-background;
 }
 
 .title-bar h3 {

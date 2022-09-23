@@ -2,16 +2,8 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 
-// app.commandLine.appendSwitch('no-sandbox');
-// app.commandLine.appendSwitch('disable-gpu');
-// app.commandLine.appendSwitch('disable-software-rasterizer');
-// app.commandLine.appendSwitch('disable-gpu-compositing');
-// app.commandLine.appendSwitch('disable-gpu-rasterization');
-// app.commandLine.appendSwitch('disable-gpu-sandbox');
-// app.commandLine.appendSwitch('--no-sandbox');
-// app.disableHardwareAcceleration();
-
 let win;
+let child;
 
 // Initial window render
 function createWindow() {
@@ -22,7 +14,7 @@ function createWindow() {
       webPreferences: {
          nodeIntegration: true,
          contextIsolation: false,
-         preload: path.join(__dirname, 'preload.js'),
+         preload: path.join(__dirname, 'preload.ts'),
       },
    });
 
@@ -31,6 +23,8 @@ function createWindow() {
          ? 'http://localhost:5173'
          : `file://${path.join(__dirname, '../build/public/index.html')}`
    );
+
+   win.webContents.openDevTools({ mode: 'detach' });
 }
 app.whenReady().then(createWindow);
 
@@ -51,6 +45,25 @@ ipcMain.on('MAXIMIZE', () => {
 
 ipcMain.on('MINIMIZE', () => {
    win.minimize();
+});
+
+
+const createChildWindow = () => {
+   child = new BrowserWindow({
+      width: 300,
+      height: 300,
+      frame: false,
+      webPreferences: {
+         nodeIntegration: true,
+         contextIsolation: false,
+      },
+   });
+   child.loadURL('http://localhost:5173/note/1');
+}
+
+ipcMain.on('NEWWINDOW', () => {
+   // win.minimize()
+   createChildWindow()
 });
 
 // win.on('maximize', () => {

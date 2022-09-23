@@ -14,11 +14,18 @@
       "electron": "wait-on tcp:5173 && electron ."
    },
    "dependencies": {
+      "@codemirror/lang-javascript": "^6.1.0",
+      "@codemirror/lang-markdown": "^6.0.1",
+      "@codemirror/language-data": "^6.1.0",
       "@fortawesome/fontawesome-svg-core": "^6.2.0",
       "@fortawesome/free-regular-svg-icons": "^6.2.0",
       "@fortawesome/free-solid-svg-icons": "^6.2.0",
       "@fortawesome/react-fontawesome": "^0.2.0",
+      "@lezer/common": "^1.0.1",
+      "@uiw/codemirror-themes-all": "^4.12.3",
+      "@uiw/react-codemirror": "^4.12.3",
       "babel-plugin-macros": "^3.1.0",
+      "codemirror": "^6.0.1",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "react-query": "^3.39.2",
@@ -27,6 +34,7 @@
       "vite-plugin-electron": "^0.9.3"
    },
    "devDependencies": {
+      "@faker-js/faker": "^7.5.0",
       "@types/react": "^18.0.17",
       "@types/react-dom": "^18.0.6",
       "@vitejs/plugin-react": "^2.1.0",

@@ -10,13 +10,14 @@
 
 .titletext {
    background: linear-gradient(to right, $red, $blue, $green);
+   background-clip: text;
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
 }
 
 .form {
    background-color: $lighter-background;
-   border-top: 0.1em solid #a1a1a1ff;
+   border-top: 0.1em solid $shadow-color;
    display: flex;
    flex-direction: column;
    justify-content: center;

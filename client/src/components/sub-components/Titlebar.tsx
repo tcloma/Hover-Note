@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowMinimize, faWindowMaximize, faWindowClose, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
 const electron = window.require('electron')
 const { ipcRenderer } = electron
@@ -8,6 +9,7 @@ const { ipcRenderer } = electron
 type Props = {}
 const Titlebar = (props: Props) => {
    const [windowMaximize, setWindowMaximize] = useState(false)
+   const navigate = useNavigate()
 
    ipcRenderer.on('isMaximized', () => {
       setWindowMaximize(true)
@@ -18,7 +20,7 @@ const Titlebar = (props: Props) => {
 
    return (
       <div className='title-bar'>
-         <h3> Hover </h3>
+         <h3 onClick={() => navigate('/')}> Hover </h3>
          <div className='control-buttons'>
             <button
                title='Minimize'

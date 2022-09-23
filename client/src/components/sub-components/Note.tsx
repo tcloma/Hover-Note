@@ -1,13 +1,30 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import '../../styles/components/sub-components/Note.scss'
 
 type Props = {
-   title: string,
-   content: string
+   id: Number,
+   title: String,
+   content: String
+   setCurrentNoteId?: any
 }
 
-const Note = ({ title, content }: Props) => {
+
+const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
+   const navigate = useNavigate()
+
+   const notePageRoute = () => {
+      setCurrentNoteId(id)
+      navigate(`/note/${id}`)
+   }
+
+   console.log('id: ', id)
+
    return (
-      <div className="note">
+      <div
+         className="note"
+         onClick={() => notePageRoute()}
+      >
          <h1>{title}</h1>
          <p>{content}</p>
       </div>

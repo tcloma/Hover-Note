@@ -4,42 +4,34 @@ import styles from '../../styles/components/HomePage.module.scss'
 import React from 'react';
 
 type Props = {
-   user?: string
+   user?: String
+   data: Array<any>
+   setCurrentNoteId?: any
 }
 
-const HomePage = ({ user = 'Ty' }: Props) => {
-   const navigate = useNavigate()
 
+const HomePage = ({ user = 'Ty', data, setCurrentNoteId }: Props) => {
    const createBrowserWindow = () => {
-      window.open(
-         'http://localhost:5173/note', '',
-         'width=320, height=320'
-      )
-   }
 
+   }
+   console.log(data)
    return (
       <div className={styles.page}>
          <h1>Welcome back, {user}</h1>
-         <button onClick={() => navigate('/')}> Go to landing </button>
-         <button onClick={() => createBrowserWindow()}> New page </button>
+         <button onClick={() => createBrowserWindow()}> New page test </button>
          <h3>Recent Notes</h3>
          <main className={styles.noteContainer}>
-            <Note
-               title="Test"
-               content="This is a test note"
-            />
-            <Note
-               title="Test2"
-               content="This is a test note"
-            />
-            <Note
-               title="Test3"
-               content="This is a test note"
-            />
-            <Note
-               title="Test4"
-               content="This is a test note"
-            />
+            {data.map((item) => {
+               return (
+                  <Note
+                     key={item.id}
+                     id={item.id}
+                     title={item.title}
+                     content={item.content}
+                     setCurrentNoteId={setCurrentNoteId}
+                  />
+               )
+            })}
          </main>
       </div>
    )

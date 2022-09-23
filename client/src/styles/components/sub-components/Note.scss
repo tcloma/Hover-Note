@@ -1,7 +1,23 @@
+@use '../../abstracts/' as *;
+
 .note {
    outline: 1px solid black;
+   background-color: white;
+   color: black;
    display: flex;
    flex-direction: column;
-   align-items: flex-start;
+   // align-items: flex-start;
    padding: 1em;
+   width: 20vw;
+   height: 20vw;
+   overflow: hidden;
+   font-size: .7em;
+   padding-bottom: 3em;
+   text-align: left;
+   // -webkit-mask-image: linear-gradient(to bottom, black, 99%, transparent);
+   // mask-image: linear-gradient(180deg, white, 95%, transparent);
+}
+
+.note h1{
+   text-transform: capitalize;
 }

@@ -1,0 +1,14 @@
+@use '../abstracts' as *;
+
+
+.page {
+   @include page-template($background-color, $text-color);
+   justify-content: flex-start;
+   align-items: flex-start;
+   text-align: left;
+   // padding-left: 2em;
+   // padding-right: 2em;
+}
+
+.editor {
+}
