@@ -1,1 +1,4 @@
-declare module '*.scss'
+declare module '*.scss';
+interface Window {
+   electron?: any;
+}

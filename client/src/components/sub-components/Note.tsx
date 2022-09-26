@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/components/sub-components/Note.scss'
 
 type Props = {
-   id: Number,
-   title: String,
-   content: String
+   id: number,
+   title: string,
+   content: string
    setCurrentNoteId?: any
 }
 
@@ -18,7 +18,7 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
       navigate(`/note/${id}`)
    }
 
-   console.log('id: ', id)
+   // console.log('id: ', id)
 
    return (
       <div

@@ -3,9 +3,8 @@ import mongoose from 'mongoose';
 import EventEmitter from 'events';
 import { readFile } from 'fs/promises';
 import dotenv from 'dotenv';
-import { greet } from './func';
-import { UserModel } from './models/Users';
 import cors from 'cors';
+import { UserModel } from './models/Users';
 
 dotenv.config();
 mongoose.connect(
@@ -31,7 +30,6 @@ app.get('/', (req: Request, res: Response): void => {
 
 app.get('/text', async (req: Request, res: Response) => {
    res.send(await readFile('./hello.txt', 'utf-8'));
-   greet('George');
    eventEmitter.emit('load');
 });
 

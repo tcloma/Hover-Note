@@ -3,20 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowMinimize, faWindowMaximize, faWindowClose, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from 'react-router-dom';
 
-const electron = window.require('electron')
-const { ipcRenderer } = electron
-
 type Props = {}
-const Titlebar = (props: Props) => {
-   const [windowMaximize, setWindowMaximize] = useState(false)
-   const navigate = useNavigate()
 
-   ipcRenderer.on('isMaximized', () => {
-      setWindowMaximize(true)
-   })
-   ipcRenderer.on('isRestored', () => {
-      setWindowMaximize(false)
-   })
+const Titlebar = (props: Props) => {
+   // States
+   const [windowMaximize, setWindowMaximize] = useState(false)
+
+   // API definitions
+   const navigate = useNavigate()
+   const titleBar = window.electron.titleBarApi
 
    return (
       <div className='title-bar'>
@@ -25,27 +20,30 @@ const Titlebar = (props: Props) => {
             <button
                title='Minimize'
                onClick={() => {
-                  ipcRenderer.send('MINIMIZE')
-               }}>
+                  titleBar.minimize()
+               }}
+            >
                <FontAwesomeIcon icon={faWindowMinimize} />
             </button>
             <button
                title={windowMaximize ? 'Restore' : 'Maximize'}
                onClick={() => {
-                  ipcRenderer.send('MAXIMIZE')
-               }}>
-
+                  titleBar.maximize()
+                  setWindowMaximize(!windowMaximize)
+               }}
+            >
                {windowMaximize ?
                   <FontAwesomeIcon icon={faWindowRestore} />
-                  : <FontAwesomeIcon icon={faWindowMaximize} />}
-
+                  : <FontAwesomeIcon icon={faWindowMaximize} />
+               }
             </button>
             <button
                className='quitBtn'
                title='Quit'
                onClick={() => {
-                  ipcRenderer.send('QUIT')
-               }}>
+                  titleBar.quit()
+               }}
+            >
                <FontAwesomeIcon icon={faWindowClose} />
             </button>
          </div>

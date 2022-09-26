@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
+const fs = require('fs').promises;
 
 let win;
 let child;
@@ -8,12 +9,12 @@ let child;
 // Initial window render
 function createWindow() {
    win = new BrowserWindow({
-      width: 800,
-      height: 600,
+      width: 1200,
+      height: 800,
       frame: false,
       webPreferences: {
-         nodeIntegration: true,
-         contextIsolation: false,
+         nodeIntegration: false,
+         contextIsolation: true,
          preload: path.join(__dirname, 'preload.ts'),
       },
    });
@@ -29,24 +30,19 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 // Title bar controls
-ipcMain.on('QUIT', () => {
-   app.quit();
-});
-
 ipcMain.on('MAXIMIZE', () => {
    if (win.isMaximized()) {
       win.restore();
-      win.webContents.send('isRestored');
    } else {
       win.maximize();
-      win.webContents.send('isMaximized');
    }
 });
-
 ipcMain.on('MINIMIZE', () => {
    win.minimize();
 });
-
+ipcMain.on('QUIT', () => {
+   app.quit();
+});
 
 const createChildWindow = () => {
    child = new BrowserWindow({
@@ -54,23 +50,17 @@ const createChildWindow = () => {
       height: 300,
       frame: false,
       webPreferences: {
-         nodeIntegration: true,
-         contextIsolation: false,
+         nodeIntegration: false,
+         contextIsolation: true,
       },
    });
    child.loadURL('http://localhost:5173/note/1');
-}
+};
 
 ipcMain.on('NEWWINDOW', () => {
    // win.minimize()
-   createChildWindow()
+   createChildWindow();
 });
-
-// win.on('maximize', () => {
-// });
-
-// win.on('unmaximize', () => {
-// });
 
 // Close app when all windows are closed
 app.on('window-all-closed', () => {
@@ -80,8 +70,19 @@ app.on('window-all-closed', () => {
 });
 
 // Make initial window
-app.on('activate', () => {
+app.on('activate', () => { 
    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
    }
 });
+
+const directory = '/Users/RikaaGamingPC1/Documents/Hover';
+const readFiles = async () => {
+   const files = await fs.readdir(directory);
+   for (const fileName of files) {
+      const file = await fs.readFile(`${directory}/${fileName}`, 'utf-8');
+      win.webContents.send('return-files', file);
+   }
+};
+
+ipcMain.on('get-files', readFiles)

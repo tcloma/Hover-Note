@@ -4,21 +4,22 @@ import styles from '../../styles/components/HomePage.module.scss'
 import React from 'react';
 
 type Props = {
-   user?: String
+   user?: string
    data: Array<any>
    setCurrentNoteId?: any
 }
 
-
 const HomePage = ({ user = 'Ty', data, setCurrentNoteId }: Props) => {
-   const createBrowserWindow = () => {
 
+   const createBrowserWindow = () => {
+      const files = window.electron.fileSystemApi.getFiles()
+      console.log(files)
    }
-   console.log(data)
+
    return (
       <div className={styles.page}>
          <h1>Welcome back, {user}</h1>
-         <button onClick={() => createBrowserWindow()}> New page test </button>
+         <button onClick={() => createBrowserWindow()}> Fetch file test </button>
          <h3>Recent Notes</h3>
          <main className={styles.noteContainer}>
             {data.map((item) => {

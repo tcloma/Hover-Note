@@ -13,7 +13,7 @@ const App = () => {
    const queryClient = new QueryClient()
    const exampleData = new Array(8).fill().map((v, i) => ({ id: i + 1, title: `${faker.word.adjective()} ${faker.word.noun()}`, content: faker.lorem.lines() }))
 
-   console.log(exampleData)
+   // console.log(exampleData)
 
    return (
       <BrowserRouter>

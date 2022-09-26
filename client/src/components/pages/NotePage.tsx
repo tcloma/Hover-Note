@@ -1,5 +1,3 @@
-const electron = window.require('electron')
-const { ipcRenderer } = electron
 import React, { useState } from 'react'
 import styles from '../../styles/components/NotePage.module.scss'
 import CodeMirror from '@uiw/react-codemirror'
@@ -8,14 +6,11 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { atomone } from '@uiw/codemirror-themes-all'
 
-
-
-
 type Props = {
    noteData: {
-      id: Number,
-      title: String,
-      content: String
+      id: number,
+      title: string,
+      content: string
    }
 }
 
@@ -28,7 +23,7 @@ const NotePage = ({ noteData }: Props) => {
 
    const createNewWindow = () => {
       console.log('clicked')
-      ipcRenderer.send('NEWWINDOW')
+      // ipcRenderer.send('NEWWINDOW')
    }
 
    const onChange = React.useCallback((value, viewUpdate) => {
