@@ -13,6 +13,8 @@ const NotePage = ({ noteData }: Props) => {
       console.log('clicked')
    }
 
+   console.log('Page content: \n', content)
+
    return (
       <div className={styles.page}>
          <button onClick={() => createNewWindow()}>Popup</button>

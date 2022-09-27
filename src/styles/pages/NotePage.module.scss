@@ -6,9 +6,10 @@
    justify-content: flex-start;
    align-items: flex-start;
    text-align: left;
-   // padding-left: 2em;
-   // padding-right: 2em;
+   padding-left: 2em;
+   padding-right: 2em;
 }
 
-.editor {
+.page p {
+   white-space: pre-line;
 }
