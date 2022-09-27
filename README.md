@@ -35,7 +35,7 @@
 
 ## UI Wireframe
 
-![react wireframe layout](./assests/Wireframe.png)
+![react wireframe layout](./public/Wireframe.png)
 
 ## Database Schema
-![backend document schema](./assests/Tables.png)
+![backend document schema](./public/Tables.png)
