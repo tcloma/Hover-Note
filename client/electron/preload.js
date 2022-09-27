@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
+const files = []
 
 contextBridge.exposeInMainWorld('electron', {
    titleBarApi: {
@@ -18,15 +19,17 @@ contextBridge.exposeInMainWorld('electron', {
       },
    },
    fileSystemApi: {
-      getFiles() {
-         // const files = []
+      processFiles() {
+         if (files.length > 0) return null
+         console.log('called: ', files.length)
          ipcRenderer.send('get-files');
-         ipcRenderer.on('return-files', async (event, file) => {
-            console.log(file);
-            return file;
+         ipcRenderer.on('return-files', (event, file) => {
+            files.push(file)
+            console.log(files)
          });
-
-         // return files
       },
+      getFiles() {
+         return files
+      }
    },
 });

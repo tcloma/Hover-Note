@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from 'react';
 import Note from "../sub-components/Note"
 import styles from '../../styles/components/HomePage.module.scss'
-import React from 'react';
 
 type Props = {
    user?: string
@@ -10,16 +10,24 @@ type Props = {
 }
 
 const HomePage = ({ user = 'Ty', data, setCurrentNoteId }: Props) => {
+   // const [userFiles, setUserFiles] = useState([])
+   const filesApi = window.electron.fileSystemApi
+
+   useEffect(() => {
+      filesApi.processFiles()
+   }, [])
 
    const createBrowserWindow = () => {
-      const files = window.electron.fileSystemApi.getFiles()
-      console.log(files)
+      const renderedFiles = filesApi.getFiles()
+      console.log(renderedFiles)
+      // setUserFiles(renderedFiles)
    }
 
    return (
       <div className={styles.page}>
          <h1>Welcome back, {user}</h1>
          <button onClick={() => createBrowserWindow()}> Fetch file test </button>
+         <button>  </button>
          <h3>Recent Notes</h3>
          <main className={styles.noteContainer}>
             {data.map((item) => {
