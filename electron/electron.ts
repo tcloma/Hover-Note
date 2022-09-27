@@ -19,6 +19,7 @@ function createWindow() {
    });
 
    win.loadURL('http://localhost:5173');
+   win.maximize();
    win.webContents.openDevTools({ mode: 'detach' });
 }
 app.whenReady().then(createWindow);
@@ -40,8 +41,8 @@ ipcMain.on('QUIT', () => {
 
 const createChildWindow = () => {
    child = new BrowserWindow({
-      width: 500,
-      height: 500,
+      width: 300,
+      height: 300,
       frame: false,
       webPreferences: {
          nodeIntegration: false,

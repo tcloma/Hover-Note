@@ -7,7 +7,7 @@ type Props = {}
 
 const Titlebar = ({ }: Props) => {
    // Local state definitions
-   const [windowMaximize, setWindowMaximize] = useState(false)
+   const [windowMaximize, setWindowMaximize] = useState(true)
 
    // Local API definitions
    const navigate = useNavigate()

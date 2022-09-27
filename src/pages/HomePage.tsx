@@ -13,6 +13,9 @@ const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
       <div className={styles.page}>
          <h1>Welcome back</h1>
          <h3>Recent Notes</h3>
+         <button onClick={() => {
+            window.electron.windowApi.newWindow()
+         }}> test </button>
          <main className={styles.noteContainer}>
             {userFiles.map((item) => {
                return (

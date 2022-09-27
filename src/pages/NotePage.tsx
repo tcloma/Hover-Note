@@ -1,27 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/pages/NotePage.module.scss'
 import { IUserData } from '../interfaces'
+import { atomone } from '@uiw/codemirror-themes-all'
+import CodeMirror from '@uiw/react-codemirror'
+import { loadLanguage } from '@uiw/codemirror-extensions-langs'
 
 type Props = {
    noteData: IUserData
 }
 
 const NotePage = ({ noteData }: Props) => {
+   const [editorValue, setEditorValue] = useState('# Hello!')
    const { id, title, content } = noteData
 
-   const createNewWindow = () => {
-      console.log('clicked')
-   }
-
-   // console.log('Page content: \n', content)
+   useEffect(() => {
+      setEditorValue(content)
+   }, [])
 
    return (
       <div className={styles.page}>
-         <button onClick={() => createNewWindow()}>Popup</button>
-         <h1>{title}</h1>
-         <p>{content}</p>
-         <div className={styles.editor}>
-         </div>
+         <CodeMirror
+            value={editorValue}
+            height='100vh'
+            width='100vw'
+            theme={atomone}
+            extensions={[loadLanguage('markdown')]}
+            basicSetup={{
+               foldGutter: false,
+               dropCursor: false,
+               allowMultipleSelections: false,
+               indentOnInput: false,
+            }}
+         />
       </div>
    )
 }
