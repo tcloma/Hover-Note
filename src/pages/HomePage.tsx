@@ -1,16 +1,11 @@
 import React from "react"
-import Note from "../sub-components/Note"
-import styles from '../../styles/components/HomePage.module.scss'
-
-interface IUserData {
-   id: number,
-   title: string,
-   content: string
-}
+import Note from "../components/Note"
+import styles from '../styles/pages/HomePage.module.scss'
+import { IUserData } from '../interfaces'
 
 type Props = {
    userFiles: IUserData[],
-   setCurrentNoteId?: any
+   setCurrentNoteId: any
 }
 
 const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {

@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {}
 
-const Titlebar = (props: Props) => {
-   // States
+const Titlebar = ({ }: Props) => {
+   // Local state definitions
    const [windowMaximize, setWindowMaximize] = useState(false)
 
-   // API definitions
+   // Local API definitions
    const navigate = useNavigate()
    const titleBar = window.electron.titleBarApi
 

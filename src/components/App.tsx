@@ -1,18 +1,20 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import React, { useState, useEffect } from 'react';
-import LandingPage from './pages/LandingPage';
-import HomePage from './pages/HomePage';
-import NotePage from './pages/NotePage';
+import { IUserData } from '../interfaces';
+import LandingPage from '../pages/LandingPage';
+import HomePage from '../pages/HomePage';
+import NotePage from '../pages/NotePage';
 import Layout from './Layout';
 
 const App = () => {
+   // Global state definitions
    const [currentNoteId, setCurrentNoteId] = useState<number>(1)
-   const queryClient = new QueryClient()
+   const [userFiles, setUserFiles] = useState<IUserData[]>([])
 
-   const [userFiles, setUserFiles] = useState([])
-   const filesApi = window.electron.fileSystemApi
+   // Global API definitions
+   const filesApi = window.electron.filesApi
 
+   // Set timeout to give files time to process
    useEffect(() => {
       filesApi.processFiles()
       setTimeout(() => {
@@ -20,17 +22,17 @@ const App = () => {
       }, 1000)
    }, [])
 
+   const currentNote = userFiles.find(file => file.id === currentNoteId)!
+
    return (
       <BrowserRouter>
-         <QueryClientProvider client={queryClient}>
             <Layout>
                <Routes>
                   <Route path='/' element={<LandingPage />} />
                   <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
-                  <Route path='/note/:id' element={<NotePage noteData={userFiles} />} />
+                  <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
                </Routes>
             </Layout>
-         </QueryClientProvider>
       </BrowserRouter>
    );
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../../styles/components/sub-components/Note.scss'
+import '../styles/components/Note.scss'
 
 type Props = {
    id: number,

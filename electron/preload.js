@@ -18,7 +18,7 @@ contextBridge.exposeInMainWorld('electron', {
          ipcRenderer.send('NEWWINDOW');
       },
    },
-   fileSystemApi: {
+   filesApi: {
       processFiles() {
          if (files.length > 0) return null
          ipcRenderer.send('get-files');
