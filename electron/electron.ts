@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const isDev = require('electron-is-dev');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -15,16 +14,11 @@ function createWindow() {
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
-         preload: path.join(__dirname, 'preload.js'),
+         preload: path.join(__dirname, 'preload.ts'),
       },
    });
 
-   win.loadURL(
-      isDev
-         ? 'http://localhost:5173'
-         : `file://${path.join(__dirname, '../build/public/index.html')}`
-   );
-
+   win.loadURL('http://localhost:5173');
    win.webContents.openDevTools({ mode: 'detach' });
 }
 app.whenReady().then(createWindow);
@@ -46,12 +40,13 @@ ipcMain.on('QUIT', () => {
 
 const createChildWindow = () => {
    child = new BrowserWindow({
-      width: 300,
-      height: 300,
+      width: 500,
+      height: 500,
       frame: false,
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
+         preload: path.join(__dirname, 'preload.js'),
       },
    });
    child.loadURL('http://localhost:5173/note/1');
@@ -68,8 +63,6 @@ app.on('window-all-closed', () => {
       app.quit();
    }
 });
-
-// Make initial window
 app.on('activate', () => { 
    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();

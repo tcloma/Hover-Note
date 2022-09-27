@@ -21,7 +21,6 @@ contextBridge.exposeInMainWorld('electron', {
    fileSystemApi: {
       processFiles() {
          if (files.length > 0) return null
-         console.log('called: ', files.length)
          ipcRenderer.send('get-files');
          ipcRenderer.on('return-files', (event, file) => {
             files.push(file)
