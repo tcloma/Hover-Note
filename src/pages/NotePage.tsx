@@ -13,7 +13,7 @@ const NotePage = ({ noteData }: Props) => {
       console.log('clicked')
    }
 
-   console.log('Page content: \n', content)
+   // console.log('Page content: \n', content)
 
    return (
       <div className={styles.page}>
