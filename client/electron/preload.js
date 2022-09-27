@@ -25,10 +25,10 @@ contextBridge.exposeInMainWorld('electron', {
          ipcRenderer.send('get-files');
          ipcRenderer.on('return-files', (event, file) => {
             files.push(file)
-            console.log(files)
          });
       },
       getFiles() {
+         console.log('Files from preload: ', files)
          return files
       }
    },

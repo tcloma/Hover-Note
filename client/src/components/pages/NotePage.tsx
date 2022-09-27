@@ -7,7 +7,7 @@ import { languages } from '@codemirror/language-data';
 import { atomone } from '@uiw/codemirror-themes-all'
 
 type Props = {
-   noteData: {
+   noteData?: {
       id: number,
       title: string,
       content: string

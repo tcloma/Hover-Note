@@ -1,36 +1,25 @@
-import { useNavigate } from "react-router-dom"
-import React, { useEffect, useState } from 'react';
+import React from "react"
 import Note from "../sub-components/Note"
 import styles from '../../styles/components/HomePage.module.scss'
 
+interface IUserData {
+   id: number,
+   title: string,
+   content: string
+}
+
 type Props = {
-   user?: string
-   data: Array<any>
+   userFiles: IUserData[],
    setCurrentNoteId?: any
 }
 
-const HomePage = ({ user = 'Ty', data, setCurrentNoteId }: Props) => {
-   // const [userFiles, setUserFiles] = useState([])
-   const filesApi = window.electron.fileSystemApi
-
-   useEffect(() => {
-      filesApi.processFiles()
-   }, [])
-
-   const createBrowserWindow = () => {
-      const renderedFiles = filesApi.getFiles()
-      console.log(renderedFiles)
-      // setUserFiles(renderedFiles)
-   }
-
+const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
    return (
       <div className={styles.page}>
-         <h1>Welcome back, {user}</h1>
-         <button onClick={() => createBrowserWindow()}> Fetch file test </button>
-         <button>  </button>
+         <h1>Welcome back</h1>
          <h3>Recent Notes</h3>
          <main className={styles.noteContainer}>
-            {data.map((item) => {
+            {userFiles.map((item) => {
                return (
                   <Note
                      key={item.id}

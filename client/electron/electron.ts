@@ -80,9 +80,14 @@ const directory = 'C:/Users/tyron/Documents/HoverTest';
 
 const readFilesFromDirectory = async () => {
    const directoryContents = await fs.readdir(directory);
-   for (const fileName of directoryContents) {
-      const file = await fs.readFile(`${directory}/${fileName}`, 'utf-8');
-      win.webContents.send('return-files', file);
+   for (const [index, fileName] of directoryContents.entries()) {
+      const fileContent = await fs.readFile(`${directory}/${fileName}`, 'utf-8');
+      const fileObject = {
+         id: index+1,
+         title: fileName,
+         content: fileContent
+      }
+      win.webContents.send('return-files', fileObject);
    }
 };
 
