@@ -61,6 +61,7 @@ const createChildWindow = (args) => {
 
 ipcMain.on('NEWWINDOW', (event, args) => {
    // Pass user files from NotePage through web contents
+   // Try to make a seperate component & route that only triggers from the child window
    // console.log('args: ', args);
    createChildWindow(args);
 });
