@@ -1,9 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
+// const slash = require('slash');
 
 let win;
 let child;
+let directory;
 
 // Initial window render
 function createWindow() {
@@ -64,25 +66,46 @@ app.on('window-all-closed', () => {
       app.quit();
    }
 });
-app.on('activate', () => { 
+app.on('activate', () => {
    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
    }
 });
 
-const directory = 'C:/Users/tyron/Documents/HoverTest';
+const openDirectoryDialog = () => {
+   dialog
+      .showOpenDialog(win, {
+         properties: ['openFile', 'openDirectory'],
+      })
+      .then((result) => {
+         if (result.canceled) return null;
+         win.webContents.send('return-path', result.filePaths);
+         const convertedPath = result.filePaths
+            .toString()
+            .split(path.sep)
+            .join(path.posix.sep);
+         directory = convertedPath;
+         console.log('Directory: ', directory);
+      });
+};
+
+ipcMain.on('open-dialog', openDirectoryDialog);
 
 const readFilesFromDirectory = async () => {
+   if (directory === undefined) return null;
    const directoryContents = await fs.readdir(directory);
    for (const [index, fileName] of directoryContents.entries()) {
-      const fileContent = await fs.readFile(`${directory}/${fileName}`, 'utf-8');
+      const fileContent = await fs.readFile(
+         `${directory}/${fileName}`,
+         'utf-8'
+      );
       const fileObject = {
-         id: index+1,
+         id: index + 1,
          title: fileName,
-         content: fileContent
-      }
+         content: fileContent,
+      };
       win.webContents.send('return-files', fileObject);
    }
 };
 
-ipcMain.on('get-files', readFilesFromDirectory)
+ipcMain.on('get-files', readFilesFromDirectory);

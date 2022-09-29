@@ -39,6 +39,7 @@
       "react-dom": "^18.2.0",
       "react-router-dom": "^6.4.0",
       "sass": "^1.54.9",
+      "slash": "^5.0.0",
       "vite-plugin-electron": "^0.9.3"
    },
    "devDependencies": {

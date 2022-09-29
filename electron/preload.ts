@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const files = []
+const files = [];
+let dirPath;
 
 contextBridge.exposeInMainWorld('electron', {
    titleBarApi: {
@@ -20,15 +21,29 @@ contextBridge.exposeInMainWorld('electron', {
    },
    filesApi: {
       processFiles() {
-         if (files.length > 0) return null
+         if (files.length > 0) return null;
          ipcRenderer.send('get-files');
          ipcRenderer.on('return-files', (event, file) => {
-            files.push(file)
+            // console.log(event)
+            files.push(file);
          });
       },
       getFiles() {
-         console.log('Files from preload: ', files)
-         return files
-      }
+         console.log('Files from preload: ', files);
+         return files;
+      },
+   },
+   dialogApi: {
+      openDialog() {
+         files.length = 0
+         ipcRenderer.send('open-dialog');
+         ipcRenderer.on('return-path', (event, path) => {
+            dirPath = path;
+         });
+      },
+      getPath() {
+         return dirPath;
+      },
+
    },
 });
