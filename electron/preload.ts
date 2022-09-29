@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const files = [];
+const childFiles = []
 let dirPath;
 
 contextBridge.exposeInMainWorld('electron', {
@@ -15,9 +16,17 @@ contextBridge.exposeInMainWorld('electron', {
       },
    },
    windowApi: {
-      newWindow() {
-         ipcRenderer.send('NEWWINDOW');
+      newWindow(noteId, userFiles) {
+         console.log('userFiles: ', userFiles)
+         ipcRenderer.send('NEWWINDOW', [noteId, userFiles]);
+         ipcRenderer.on('return-user-files', (event, newFiles) => {
+            childFiles.push(newFiles)
+            console.log('childFiles: ', childFiles)
+         })
       },
+      returnChildData() {
+         return childFiles
+      }
    },
    filesApi: {
       processFiles() {

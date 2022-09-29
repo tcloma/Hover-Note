@@ -7,10 +7,12 @@ import { langs } from '@uiw/codemirror-extensions-langs'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 import { useNavigate } from 'react-router-dom'
+import { useAwaitPoll } from '../functions';
 
 
 type Props = {
-   noteData: IUserData
+   noteData: IUserData,
+   userFiles: any
 }
 
 const myTheme = createTheme({
@@ -43,16 +45,21 @@ const myTheme = createTheme({
    ],
 });
 
-const NotePage = ({ noteData }: Props) => {
+const NotePage = ({ noteData = { id: 1, title: 'test', content: 'hello' }}: Props) => {
    const [editorValue, setEditorValue] = useState('# Hello!')
+   const [fileCopy, setFileCopy] = useState([])
    const { id, title, content } = noteData
+   console.log(id)
    const navigate = useNavigate()
 
+   const windowApi = window.electron.windowApi
+
    useEffect(() => {
+      useAwaitPoll(windowApi.returnChildData, setFileCopy)
       setEditorValue(content)
    }, [])
 
-   const onEditorChange = useCallback((value, viewupdate) => {
+   const onEditorChange = useCallback((value: string) => {
       console.log('value: ', value)
       setEditorValue(value)
       // console.log('view: ', viewupdate)
@@ -61,7 +68,8 @@ const NotePage = ({ noteData }: Props) => {
    return (
       <div className={styles.page}>
          <button onClick={() => {
-            navigate('/home')
+            // navigate('/home')
+            console.log(fileCopy)
          }}>Go back</button>
          <div className={styles.editor}>
             <CodeMirror

@@ -41,23 +41,28 @@ ipcMain.on('QUIT', () => {
    app.quit();
 });
 
-const createChildWindow = () => {
+const createChildWindow = (args) => {
+   const noteId = args[0]
+   const userFiles = args[1]
+   // console.log(userFiles);
    childWindow = new BrowserWindow({
-      width: 300,
-      height: 300,
+      width: 400,
+      height: 400,
       frame: false,
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
-         preload: path.join(__dirname, 'preload.js'),
+         preload: path.join(__dirname, 'preload.ts'),
       },
    });
-   childWindow.loadURL('http://localhost:5173/note/1');
+   childWindow.loadURL(`http://localhost:5173/note/${noteId}`);
+   childWindow.webContents.send('return-user-files', userFiles)
 };
 
-ipcMain.on('NEWWINDOW', () => {
-   // win.minimize()
-   createChildWindow();
+ipcMain.on('NEWWINDOW', (event, args) => {
+   // Pass user files from NotePage through web contents
+   // console.log('args: ', args);
+   createChildWindow(args);
 });
 
 // Close app when all windows are closed

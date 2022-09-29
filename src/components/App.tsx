@@ -36,7 +36,7 @@ const App = () => {
             <Routes>
                <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
                <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
-               <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
+               <Route path='/note/:id' element={<NotePage noteData={currentNote} userFiles={userFiles}/>} />
             </Routes>
          </Layout>
       </BrowserRouter>

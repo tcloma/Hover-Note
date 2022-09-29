@@ -22,6 +22,7 @@ const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
                      title={item.title}
                      content={item.content}
                      setCurrentNoteId={setCurrentNoteId}
+                     userFiles={userFiles}
                   />
                )
             })}

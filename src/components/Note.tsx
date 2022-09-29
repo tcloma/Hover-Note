@@ -10,11 +10,12 @@ type Props = {
    id: number,
    title: string,
    content: string
-   setCurrentNoteId?: any
+   setCurrentNoteId?: any,
+   userFiles: any
 }
 
 
-const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
+const Note = ({ title, content, id, setCurrentNoteId, userFiles }: Props) => {
    const navigate = useNavigate()
 
    const notePageRoute = () => {
@@ -27,7 +28,7 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
    return (
       <div className="note">
          <button onClick={() => {
-            window.electron.wind
+            window.electron.windowApi.newWindow(id, userFiles)
          }}>
             <FontAwesomeIcon icon={faPlus} />
          </button>
