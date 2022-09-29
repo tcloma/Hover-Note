@@ -1,15 +1,14 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
-// const slash = require('slash');
 
-let win;
-let child;
+let mainWindow;
+let childWindow;
 let directory;
 
 // Initial window render
 function createWindow() {
-   win = new BrowserWindow({
+   mainWindow = new BrowserWindow({
       width: 1200,
       height: 800,
       frame: false,
@@ -20,29 +19,29 @@ function createWindow() {
       },
    });
 
-   win.loadURL('http://localhost:5173');
-   win.maximize();
-   win.webContents.openDevTools({ mode: 'detach' });
+   mainWindow.loadURL('http://localhost:5173');
+   mainWindow.maximize();
+   mainWindow.webContents.openDevTools({ mode: 'detach' });
 }
 app.whenReady().then(createWindow);
 
 // Title bar controls
 ipcMain.on('MAXIMIZE', () => {
-   if (win.isMaximized()) {
-      win.restore();
+   if (mainWindow.isMaximized()) {
+      mainWindow.restore();
    } else {
-      win.maximize();
+      mainWindow.maximize();
    }
 });
 ipcMain.on('MINIMIZE', () => {
-   win.minimize();
+   mainWindow.minimize();
 });
 ipcMain.on('QUIT', () => {
    app.quit();
 });
 
 const createChildWindow = () => {
-   child = new BrowserWindow({
+   childWindow = new BrowserWindow({
       width: 300,
       height: 300,
       frame: false,
@@ -52,7 +51,7 @@ const createChildWindow = () => {
          preload: path.join(__dirname, 'preload.js'),
       },
    });
-   child.loadURL('http://localhost:5173/note/1');
+   childWindow.loadURL('http://localhost:5173/note/1');
 };
 
 ipcMain.on('NEWWINDOW', () => {
@@ -74,12 +73,12 @@ app.on('activate', () => {
 
 const openDirectoryDialog = () => {
    dialog
-      .showOpenDialog(win, {
+      .showOpenDialog(mainWindow, {
          properties: ['openFile', 'openDirectory'],
       })
       .then((result) => {
          if (result.canceled) return null;
-         win.webContents.send('return-path', result.filePaths);
+         mainWindow.webContents.send('return-path', result.filePaths);
          const convertedPath = result.filePaths
             .toString()
             .split(path.sep)
@@ -104,7 +103,7 @@ const readFilesFromDirectory = async () => {
          title: fileName,
          content: fileContent,
       };
-      win.webContents.send('return-files', fileObject);
+      mainWindow.webContents.send('return-files', fileObject);
    }
 };
 

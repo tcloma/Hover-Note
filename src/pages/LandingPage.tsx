@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/pages/LandingPage.module.scss';
+import { useAwaitPoll } from '../functions'
 
 type Props = {
    dirName: string,
@@ -20,15 +21,7 @@ const LandingPage = ({ dirName, setDirName }: Props) => {
 
    const handleBrowseClick = () => {
       dialogApi.openDialog()
-      const pathPolling = setInterval(() => {
-         console.log('Polling...')
-         const path = dialogApi.getPath()
-         if (path) {
-            clearInterval(pathPolling)
-            console.log(path)
-            setDirName(path)
-         }
-      }, 1000)
+      useAwaitPoll(dialogApi.getPath, setDirName)
    }
 
    return (

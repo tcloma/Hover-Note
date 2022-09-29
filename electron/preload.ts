@@ -29,13 +29,12 @@ contextBridge.exposeInMainWorld('electron', {
          });
       },
       getFiles() {
-         console.log('Files from preload: ', files);
+         // console.log('Files from preload: ', files);
          return files;
       },
    },
    dialogApi: {
       openDialog() {
-         files.length = 0
          ipcRenderer.send('open-dialog');
          ipcRenderer.on('return-path', (event, path) => {
             dirPath = path;
