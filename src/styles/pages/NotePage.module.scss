@@ -10,6 +10,11 @@
    // padding-right: 2em;
 }
 
+.page button {
+   position: absolute;
+   z-index: 3;
+}
+
 .editor {
    width: 50%;
    height: fit-content;

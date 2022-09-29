@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styles from '../styles/pages/NotePage.module.scss'
 import { IUserData } from '../interfaces'
-import { atomone } from '@uiw/codemirror-themes-all'
 import CodeMirror from '@uiw/react-codemirror'
-import { langs } from '@uiw/codemirror-extensions-langs'
-// import { StreamLanguage } from '@codemirror/language'
-// import {Markdown}
 import MarkdownPreview from '@uiw/react-markdown-preview';
+import { langs } from '@uiw/codemirror-extensions-langs'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
+import { useNavigate } from 'react-router-dom'
 
 
 type Props = {
@@ -48,6 +46,7 @@ const myTheme = createTheme({
 const NotePage = ({ noteData }: Props) => {
    const [editorValue, setEditorValue] = useState('# Hello!')
    const { id, title, content } = noteData
+   const navigate = useNavigate()
 
    useEffect(() => {
       setEditorValue(content)
@@ -61,6 +60,9 @@ const NotePage = ({ noteData }: Props) => {
 
    return (
       <div className={styles.page}>
+         <button onClick={() => {
+            navigate('/home')
+         }}>Go back</button>
          <div className={styles.editor}>
             <CodeMirror
                value={editorValue}
@@ -83,6 +85,7 @@ const NotePage = ({ noteData }: Props) => {
                style={{
                   backgroundColor: 'transparent',
                   height: '100%',
+                  fontSize: '16px'
                }}
             />
          </div>
