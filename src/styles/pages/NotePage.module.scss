@@ -1,12 +1,32 @@
 @use '../abstracts' as *;
 
-
 .page {
    @include page-template($background-color, $text-color);
-   justify-content: center;
+   align-items: flex-start;
+   flex-direction: row;
    text-align: left;
-   padding-left: 2em;
-   padding-right: 2em;
+   // height: 300vh;
+   // padding-left: 2em;
+   // padding-right: 2em;
+}
+
+.editor {
+   width: 50%;
+   height: fit-content;
+   overflow: scroll;
+   padding-left: 1em;
+   padding-right: 1em;
+}
+
+.editor::-webkit-scrollbar {
+   display: none;
+}
+
+.preview {
+   height: 100%;
+   width: 50%;
+   overflow: hidden;
+   padding: 1em;
 }
 
 .page p {

@@ -12,6 +12,7 @@ function createWindow() {
       width: 1200,
       height: 800,
       frame: false,
+      icon: '../public/favicon.ico',
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,

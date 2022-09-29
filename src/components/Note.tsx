@@ -1,6 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/components/Note.scss'
+import MarkdownPreview from '@uiw/react-markdown-preview';
+
 
 type Props = {
    id: number,
@@ -25,8 +27,15 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
          className="note"
          onClick={() => notePageRoute()}
       >
-         <h1>{title}</h1>
-         <p>{content}</p>
+         <MarkdownPreview
+            source={content}
+            style={{
+               backgroundColor: 'transparent',
+               height: '100vh'
+            }}
+         />
+         {/* <h1>{title}</h1>
+         <p>{content}</p> */}
       </div>
    )
 }
