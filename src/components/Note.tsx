@@ -32,7 +32,7 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
 
    return (
       <div className="note">
-         <button onClick={() => stickyWindowPopup}>
+         <button onClick={() => stickyWindowPopup()}>
             <FontAwesomeIcon icon={faPlus} />
          </button>
          <div onClick={() => notePageRoute()}>

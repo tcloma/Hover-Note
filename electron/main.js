@@ -7,6 +7,8 @@ let mainWindow;
 let childWindow;
 let directory;
 
+let filesCopy = []
+
 // Initial window render
 function createWindow() {
    mainWindow = new BrowserWindow({
@@ -28,24 +30,21 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 // Title bar controls
-ipcMain.on('MAXIMIZE', () => {
+ipcMain.on('maximize', () => {
    if (mainWindow.isMaximized()) {
       mainWindow.restore();
    } else {
       mainWindow.maximize();
    }
 });
-ipcMain.on('MINIMIZE', () => {
+ipcMain.on('minimize', () => {
    mainWindow.minimize();
 });
-ipcMain.on('QUIT', () => {
+ipcMain.on('quit', () => {
    app.quit();
 });
 
-const createChildWindow = (args) => {
-   const noteId = args[0]
-   const userFiles = args[1]
-   // console.log(userFiles);
+const createChildWindow = (noteId) => {
    childWindow = new BrowserWindow({
       width: 400,
       height: 400,
@@ -59,11 +58,11 @@ const createChildWindow = (args) => {
    childWindow.loadURL(`http://localhost:5173/sticky/${noteId}`);
 };
 
-ipcMain.on('NEWWINDOW', (event, noteId) => {
+ipcMain.on('new-window', (event, noteId) => {
    // Pass user files from NotePage through web contents
    // Try to make a seperate component & route that only triggers from the child window
    // Store processed files locally in electron.ts
-   // console.log('args: ', args);
+   console.log(filesCopy)
    createChildWindow(noteId);
 });
 
@@ -111,6 +110,7 @@ const readFilesFromDirectory = async () => {
          title: fileName,
          content: fileContent,
       };
+      filesCopy.push(fileObject)
       mainWindow.webContents.send('return-files', fileObject);
    }
 };
