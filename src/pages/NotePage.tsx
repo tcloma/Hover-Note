@@ -1,18 +1,17 @@
+// Hooks and interfaces
 import React, { useEffect, useState, useCallback } from 'react'
-import styles from '../styles/pages/NotePage.module.scss'
+import { useNavigate } from 'react-router-dom'
 import { IUserData } from '../interfaces'
+// Libraries
 import CodeMirror from '@uiw/react-codemirror'
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { langs } from '@uiw/codemirror-extensions-langs'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
-import { useNavigate } from 'react-router-dom'
-import { useAwaitPoll } from '../functions';
-
+import { langs } from '@uiw/codemirror-extensions-langs'
+import styles from '../styles/pages/NotePage.module.scss'
 
 type Props = {
    noteData: IUserData,
-   userFiles: any
 }
 
 const myTheme = createTheme({
@@ -45,17 +44,12 @@ const myTheme = createTheme({
    ],
 });
 
-const NotePage = ({ noteData = { id: 1, title: 'test', content: 'hello' }}: Props) => {
-   const [editorValue, setEditorValue] = useState('# Hello!')
-   const [fileCopy, setFileCopy] = useState([])
+const NotePage = ({ noteData = { id: 1, title: 'test', content: 'test' } }: Props) => {
+   const [editorValue, setEditorValue] = useState<string>('# Hello!')
    const { id, title, content } = noteData
-   console.log(id)
    const navigate = useNavigate()
 
-   const windowApi = window.electron.windowApi
-
    useEffect(() => {
-      useAwaitPoll(windowApi.returnChildData, setFileCopy)
       setEditorValue(content)
    }, [])
 
@@ -68,8 +62,7 @@ const NotePage = ({ noteData = { id: 1, title: 'test', content: 'hello' }}: Prop
    return (
       <div className={styles.page}>
          <button onClick={() => {
-            // navigate('/home')
-            console.log(fileCopy)
+            navigate('/home')
          }}>Go back</button>
          <div className={styles.editor}>
             <CodeMirror

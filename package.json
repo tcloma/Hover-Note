@@ -5,7 +5,7 @@
    "description": "Modular Markdown Sticky Notes",
    "author": "Tyrone Cloma",
    "license": "ISC",
-   "main": "./electron/electron.ts",
+   "main": "./electron/main.js",
    "scripts": {
       "start": "vite",
       "build": "tsc && vite build",

@@ -1,4 +1,4 @@
-export const useAwaitPoll = (conditionFn:() => any, resolvFn:(fn: any) =>  any) => {
+export const useAwaitPoll = (conditionFn:() => any, resolvFn:(fn: () => any) =>  any) => {
    console.log('Await poll init')
    const awaitPoll = setInterval(() => {
       console.log('Waiting...');

@@ -1,11 +1,11 @@
+// Hooks
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+// Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowMinimize, faWindowMaximize, faWindowClose, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
-import { useNavigate } from 'react-router-dom';
 
-type Props = {}
-
-const Titlebar = ({ }: Props) => {
+const Titlebar = () => {
    // Local state definitions
    const [windowMaximize, setWindowMaximize] = useState(true)
 

@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
+// Scoped variables
 let mainWindow;
 let childWindow;
 let directory;
@@ -16,7 +17,7 @@ function createWindow() {
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
-         preload: path.join(__dirname, 'preload.ts'),
+         preload: path.join(__dirname, 'preload.js'),
       },
    });
 
@@ -52,18 +53,18 @@ const createChildWindow = (args) => {
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
-         preload: path.join(__dirname, 'preload.ts'),
+         preload: path.join(__dirname, 'preload.js'),
       },
    });
-   childWindow.loadURL(`http://localhost:5173/note/${noteId}`);
-   childWindow.webContents.send('return-user-files', userFiles)
+   childWindow.loadURL(`http://localhost:5173/sticky/${noteId}`);
 };
 
-ipcMain.on('NEWWINDOW', (event, args) => {
+ipcMain.on('NEWWINDOW', (event, noteId) => {
    // Pass user files from NotePage through web contents
    // Try to make a seperate component & route that only triggers from the child window
+   // Store processed files locally in electron.ts
    // console.log('args: ', args);
-   createChildWindow(args);
+   createChildWindow(noteId);
 });
 
 // Close app when all windows are closed
@@ -98,7 +99,7 @@ const openDirectoryDialog = () => {
 ipcMain.on('open-dialog', openDirectoryDialog);
 
 const readFilesFromDirectory = async () => {
-   if (directory === undefined) return null;
+   if (directory === undefined) return;
    const directoryContents = await fs.readdir(directory);
    for (const [index, fileName] of directoryContents.entries()) {
       const fileContent = await fs.readFile(

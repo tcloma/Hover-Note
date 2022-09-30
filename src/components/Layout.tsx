@@ -1,13 +1,14 @@
 import Titlebar from './Titlebar';
 import '../styles/components/Layout.scss'
-import React from "react";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 
 type Props = {
-   children: any
+   children: ReactNode,
+   isSticky: Dispatch<SetStateAction<boolean>>
 }
 
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, isSticky }: Props) => {
    return (
       <>
          <Titlebar />

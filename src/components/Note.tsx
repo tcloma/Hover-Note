@@ -1,35 +1,38 @@
-import React from 'react'
+// Hooks
+import React, { Dispatch, SetStateAction } from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../styles/components/Note.scss'
-import MarkdownPreview from '@uiw/react-markdown-preview';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// Dependencies / libraries
+import MarkdownPreview from '@uiw/react-markdown-preview';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import '../styles/components/Note.scss'
 
 type Props = {
    id: number,
    title: string,
-   content: string
-   setCurrentNoteId?: any,
-   userFiles: any
+   content: string,
+   setCurrentNoteId: Dispatch<SetStateAction<number>>,
 }
 
 
-const Note = ({ title, content, id, setCurrentNoteId, userFiles }: Props) => {
+const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
+   // Shorthand definitions
    const navigate = useNavigate()
+   const windowAPi = window.electron.windowApi
 
    const notePageRoute = () => {
       setCurrentNoteId(id)
       navigate(`/note/${id}`)
    }
 
-   // console.log('id: ', id)
+   const stickyWindowPopup = () => {
+      windowAPi.newWindow(id)
+   }
 
    return (
       <div className="note">
-         <button onClick={() => {
-            window.electron.windowApi.newWindow(id, userFiles)
-         }}>
+         <button onClick={() => stickyWindowPopup}>
             <FontAwesomeIcon icon={faPlus} />
          </button>
          <div onClick={() => notePageRoute()}>
@@ -41,8 +44,6 @@ const Note = ({ title, content, id, setCurrentNoteId, userFiles }: Props) => {
                }}
             />
          </div>
-         {/* <h1>{title}</h1>
-         <p>{content}</p> */}
       </div>
    )
 }

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/pages/LandingPage.module.scss';
 import { useAwaitPoll } from '../functions'
 
 type Props = {
    dirName: string,
-   setDirName: any
+   setDirName: Dispatch<SetStateAction<string>>
 }
 
 const LandingPage = ({ dirName, setDirName }: Props) => {
+   // Local state
    const [showDir, setShowDir] = useState<boolean>(false)
-   // Defining hooks
+
+   // Shorthand definitions
    const navigate = useNavigate()
    const dialogApi = window.electron.dialogApi
 

@@ -16,9 +16,8 @@ contextBridge.exposeInMainWorld('electron', {
       },
    },
    windowApi: {
-      newWindow(noteId, userFiles) {
-         console.log('userFiles: ', userFiles)
-         ipcRenderer.send('NEWWINDOW', [noteId, userFiles]);
+      newWindow(noteId) {
+         ipcRenderer.send('NEWWINDOW', noteId);
          ipcRenderer.on('return-user-files', (event, newFiles) => {
             childFiles.push(newFiles)
             console.log('childFiles: ', childFiles)

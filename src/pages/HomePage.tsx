@@ -1,18 +1,17 @@
-import React from "react"
+import React, { SetStateAction, Dispatch } from "react"
 import Note from "../components/Note"
 import styles from '../styles/pages/HomePage.module.scss'
 import { IUserData } from '../interfaces'
 
 type Props = {
    userFiles: IUserData[],
-   setCurrentNoteId: any
+   setCurrentNoteId: Dispatch<SetStateAction<number>>
 }
 
 const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
    return (
       <div className={styles.page}>
-         <h1>Welcome back</h1>
-         <h3>Recent Notes</h3>
+         <h1>Note board</h1>
          <main className={styles.noteContainer}>
             {userFiles.map((item) => {
                return (
@@ -22,7 +21,6 @@ const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
                      title={item.title}
                      content={item.content}
                      setCurrentNoteId={setCurrentNoteId}
-                     userFiles={userFiles}
                   />
                )
             })}
