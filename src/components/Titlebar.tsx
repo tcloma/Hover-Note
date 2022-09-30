@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowMinimize, faWindowMaximize, faWindowClose, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
+import { faWindowMaximize, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
+import { faWindowMinimize, faXmark, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const Titlebar = () => {
    // Local state definitions
@@ -15,7 +16,7 @@ const Titlebar = () => {
 
    return (
       <div className='title-bar'>
-         <h3 onClick={() => navigate('/')}> Hover </h3>
+         <h3 onClick={() => navigate('/')}> <FontAwesomeIcon icon={faPaperPlane}/> </h3>
          <div className='control-buttons'>
             <button
                title='Minimize'
@@ -44,7 +45,7 @@ const Titlebar = () => {
                   titleBar.quit('main')
                }}
             >
-               <FontAwesomeIcon icon={faWindowClose} />
+               <FontAwesomeIcon icon={faXmark} />
             </button>
          </div>
       </div>

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowMinimize, faWindowClose, faPenToSquare, faSquareCheck } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane, faXmark, faPencil, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
@@ -14,28 +14,30 @@ const StickyNoteTitle = ({ previewNote, setPreviewNote }: Props) => {
 
    return (
       <div className='title-bar'>
-         <h3> H </h3>
+         <h3> <FontAwesomeIcon icon={faPaperPlane} /> </h3>
          <div className='control-buttons'>
             <button
-               title='Minimize'
+               style={{ width: '10vw' }}
+               title={previewNote ? 'Edit' : 'Confirm'}
                onClick={() => {
                   setPreviewNote(!previewNote)
                }}
             >
                {previewNote ?
-                  <FontAwesomeIcon icon={faPenToSquare} />
+                  <FontAwesomeIcon icon={faPencil} />
                   :
-                  <FontAwesomeIcon icon={faSquareCheck} />
+                  <FontAwesomeIcon icon={faCheck} />
                }
             </button>
             <button
                className='quitBtn'
+               style={{ width: '10vw' }}
                title='Quit'
                onClick={() => {
                   titleBar.quit()
                }}
             >
-               <FontAwesomeIcon icon={faWindowClose} />
+               <FontAwesomeIcon icon={faXmark} />
             </button>
          </div>
       </div>

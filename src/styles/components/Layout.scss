@@ -28,13 +28,16 @@
 .title-bar h3 {
    -webkit-app-region: no-drag;
    font-size: 1.5em;
+   color: $green;
+   background: linear-gradient(to right, $red, $blue, $green);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
 }
 
 .title-bar h3:hover {
    transition: all 1s ease-in;
-   background: linear-gradient(to right, $red, $blue, $green);
-   -webkit-background-clip: text;
-   -webkit-text-fill-color: transparent;
+   transform: scale(1.1);
+   color: $red;
 }
 
 .control-buttons {

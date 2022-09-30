@@ -40,7 +40,7 @@ const StickyNote = ({ isSticky, previewNote }: Props) => {
                style={{
                   backgroundColor: 'transparent',
                   height: '100%',
-                  fontSize: '16px'
+                  fontSize: '16px',
                }}
             />
             :
