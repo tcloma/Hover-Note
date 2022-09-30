@@ -1,17 +1,18 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const files = [];
+let childFile;
 let dirPath;
 
 contextBridge.exposeInMainWorld('electron', {
    titleBarApi: {
       minimize() {
-         ipcRenderer.send('maximize');
-      },
-      maximize() {
          ipcRenderer.send('minimize');
       },
-      quit() {
-         ipcRenderer.send('quit');
+      maximize() {
+         ipcRenderer.send('maximize');
+      },
+      quit(win) {
+         ipcRenderer.send('quit', win);
       },
    },
    windowApi: {
@@ -42,9 +43,17 @@ contextBridge.exposeInMainWorld('electron', {
          return dirPath;
       },
    },
-   popupApi: {
-      getData() {
-
+   stickyNoteApi: {
+      initData() {
+         console.log('clicked')
+         ipcRenderer.send('get-child-data');
+         ipcRenderer.on('return-child-data', (event, data) => {
+            console.log(data)
+            childFile = data
+         })
+      },
+      getChildData() {
+         return childFile
       }
    }
 });

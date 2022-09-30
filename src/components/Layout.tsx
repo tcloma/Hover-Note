@@ -1,17 +1,24 @@
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import Titlebar from './Titlebar';
 import '../styles/components/Layout.scss'
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import StickyNoteTitle from "./StickyNoteTitle";
 
 type Props = {
    children: ReactNode,
-   isSticky: Dispatch<SetStateAction<boolean>>
+   stickyNote: boolean,
+   previewNote: boolean,
+   setPreviewNote: Dispatch<SetStateAction<boolean>>
 }
 
 
-const Layout = ({ children, isSticky }: Props) => {
+const Layout = ({ children, stickyNote, previewNote,setPreviewNote }: Props) => {
    return (
       <>
-         <Titlebar />
+         {stickyNote ?
+            <StickyNoteTitle previewNote={previewNote} setPreviewNote={setPreviewNote} />
+            :
+            <Titlebar />
+         }
          <main>{children}</main>
       </>
 

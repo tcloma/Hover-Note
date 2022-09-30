@@ -41,7 +41,7 @@ const Titlebar = () => {
                className='quitBtn'
                title='Quit'
                onClick={() => {
-                  titleBar.quit()
+                  titleBar.quit('main')
                }}
             >
                <FontAwesomeIcon icon={faWindowClose} />

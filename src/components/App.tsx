@@ -18,6 +18,7 @@ const App = () => {
    const [dirName, setDirName] = useState<string>('')
    const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
+   const [previewNote, setPreviewNote] = useState<boolean>(true)
 
    // Shorthand definitions
    const filesApi = window.electron.filesApi
@@ -34,12 +35,12 @@ const App = () => {
 
    return (
       <BrowserRouter>
-         <Layout isSticky={setIsStickyNote}>
+         <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
             <Routes>
                <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
                <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
                <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
-               <Route path='/sticky/:id' element={<StickyNote />} />
+               <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote}/>}  />
             </Routes>
          </Layout>
       </BrowserRouter>

@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, ipcRenderer } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
 // Scoped variables
 let mainWindow;
 let childWindow;
+let childId
 let directory;
 
 let filesCopy = []
@@ -40,15 +41,21 @@ ipcMain.on('maximize', () => {
 ipcMain.on('minimize', () => {
    mainWindow.minimize();
 });
-ipcMain.on('quit', () => {
-   app.quit();
+ipcMain.on('quit', (event, win) => {
+   if (win === 'main') {
+      app.quit();
+   } else {
+      childWindow.close()
+   }
 });
 
 const createChildWindow = (noteId) => {
+   childId = noteId
    childWindow = new BrowserWindow({
       width: 400,
       height: 400,
       frame: false,
+      parent: mainWindow,
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
@@ -56,13 +63,16 @@ const createChildWindow = (noteId) => {
       },
    });
    childWindow.loadURL(`http://localhost:5173/sticky/${noteId}`);
+   childWindow.setAlwaysOnTop(true, 'scren')
 };
 
+ipcMain.on('get-child-data', () => {
+   const childFile = filesCopy.find(file => file.id === childId)
+   // console.log(childFile)
+   childWindow.webContents.send('return-child-data', childFile)
+})
+
 ipcMain.on('new-window', (event, noteId) => {
-   // Pass user files from NotePage through web contents
-   // Try to make a seperate component & route that only triggers from the child window
-   // Store processed files locally in electron.ts
-   console.log(filesCopy)
    createChildWindow(noteId);
 });
 
