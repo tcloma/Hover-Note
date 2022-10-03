@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 // Dependencies / libraries
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import '../styles/components/Note.scss'
+import { faPlus, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { Box, Button, Container } from '@chakra-ui/react';
 
 type Props = {
    id: number,
@@ -31,11 +31,18 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
    }
 
    return (
-      <div className="note">
-         <button onClick={() => stickyWindowPopup()}>
+      <Container h='20vw' w='20vw' p='1em' pt='2.5em' pos='relative' border='3px' borderColor='gray.500' borderStyle='solid' borderRadius='lg' overflow='scroll'>
+         <Button pos='absolute' variant='ghost' color='whiteAlpha.900' right='5' top='0'
+            _hover={{ color: 'purple.400' }}
+            onClick={() => stickyWindowPopup()}>
             <FontAwesomeIcon icon={faPlus} />
-         </button>
-         <div onClick={() => notePageRoute()}>
+         </Button>
+         <Button pos='absolute' variant='ghost' color='whiteAlpha.900' right='0' top='0'
+            _hover={{ color: 'purple.400' }}
+            onClick={() => console.log('clicked')}>
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+         </Button>
+         <Box onClick={() => notePageRoute()}>
             <MarkdownPreview
                source={content}
                style={{
@@ -43,8 +50,8 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
                   height: '100vh'
                }}
             />
-         </div>
-      </div>
+         </Box>
+      </Container>
    )
 }
 

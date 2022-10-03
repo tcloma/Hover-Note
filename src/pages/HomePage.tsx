@@ -1,6 +1,6 @@
+import { Flex, Wrap, WrapItem } from "@chakra-ui/react"
 import React, { SetStateAction, Dispatch } from "react"
 import Note from "../components/Note"
-import styles from '../styles/pages/HomePage.module.scss'
 import { IUserData } from '../interfaces'
 
 type Props = {
@@ -10,22 +10,23 @@ type Props = {
 
 const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
    return (
-      <div className={styles.page}>
-         <h1>Note board</h1>
-         <main className={styles.noteContainer}>
+      <Flex h='100vh' justify='center' align='center' bg='gray.800'>
+         <Wrap p='1em' w='95%'spacing='1em' justify='center'>
             {userFiles.map((item) => {
                return (
-                  <Note
-                     key={item.id}
-                     id={item.id}
-                     title={item.title}
-                     content={item.content}
-                     setCurrentNoteId={setCurrentNoteId}
-                  />
+                  <WrapItem>
+                     <Note
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        content={item.content}
+                        setCurrentNoteId={setCurrentNoteId}
+                     />
+                  </WrapItem>
                )
             })}
-         </main>
-      </div>
+         </Wrap>
+      </Flex>
    )
 }
 

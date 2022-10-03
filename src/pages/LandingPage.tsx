@@ -1,6 +1,6 @@
+import { Button, Flex, FormControl, Heading, Highlight, Input, Text } from '@chakra-ui/react';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../styles/pages/LandingPage.module.scss';
 import { useAwaitPoll } from '../functions'
 
 type Props = {
@@ -16,33 +16,49 @@ const LandingPage = ({ dirName, setDirName }: Props) => {
    const navigate = useNavigate()
    const dialogApi = window.electron.dialogApi
 
-   const handleSubmit = (e: any) => {
+   const handleSubmit = (e: React.FormEvent): void => {
       e.preventDefault();
       navigate('/home')
    }
 
-   const handleBrowseClick = () => {
+   const handleContinueClick = (): void => {
+      setShowDir(!showDir)
+   }
+
+   const handleBrowseClick = (): void => {
       dialogApi.openDialog()
       useAwaitPoll(dialogApi.getPath, setDirName)
    }
 
    return (
-      <div className={styles.page}>
-         <h1> Welcome to <span className={styles.titletext}>Hover</span> </h1>
-         {showDir ?
-            <form onSubmit={(e) => handleSubmit(e)} className={styles.directory}>
-               <input
-                  type='text'
-                  placeholder='Enter file directory: '
-                  value={dirName}
-                  onChange={(e) => setDirName(e.target.value)}
-               />
-               <button type='button' onClick={() => handleBrowseClick()}> Browse </button>
-            </form>
-            :
-            <h6 onClick={() => setShowDir(!showDir)}> Click to continue </h6>
-         }
-      </div >
+      <Flex h='100vh' justify='center' align='center' bg='gray.800' color='whiteAlpha.900'>
+         <Flex direction='column' alignItems='center'>
+            <Heading fontSize='5xl'>
+               <Highlight query={['Hover']} styles={{ color: 'teal.300' }}>
+                  Welcome to Hover
+               </Highlight>
+            </Heading>
+            {showDir ?
+               <form onSubmit={(e) => handleSubmit(e)}>
+                     <Input
+                        value={dirName}
+                        onChange={(e) => setDirName(e.target.value)}
+                        placeholder='Enter file directory: '
+                        variant='flushed'
+                        color='gray.400'
+                     />
+                     <Button colorScheme='purple' variant='solid' onClick={handleBrowseClick}>
+                        Browse
+                     </Button>
+                     <Button variant='outline' colorScheme='purple' type='submit'>
+                        Confirm
+                     </Button>
+               </form>
+               :
+               <Text color='gray.400' onClick={handleContinueClick}> Click to continue </Text>
+            }
+         </Flex>
+      </Flex>
    )
 }
 

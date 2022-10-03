@@ -6,7 +6,7 @@ import { IUserData } from '../interfaces'
 // Dependencies
 import MarkdownEditor from '../components/MarkdownEditor';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import styles from '../styles/pages/StickyNote.module.scss'
+import { Flex } from '@chakra-ui/react';
 
 type Props = {
    isSticky: Dispatch<SetStateAction<boolean>>,
@@ -18,6 +18,7 @@ const StickyNote = ({ isSticky, previewNote }: Props) => {
    const defaultObj = { id: 1, title: 'Loading', content: 'Loading...' }
    const [editorValue, setEditorValue] = useState('# Hello!')
    const [noteData, setNoteData] = useState<IUserData>(defaultObj)
+   const [isLoading, setIsLoading] = useState<boolean>(true)
 
    // Shorthand definitions
    const stickyNoteApi = window.electron.stickyNoteApi
@@ -30,26 +31,31 @@ const StickyNote = ({ isSticky, previewNote }: Props) => {
 
    useEffect(() => {
       setEditorValue(noteData.content)
+      setIsLoading(false)
    }, [noteData])
 
    return (
-      <div className={styles.note}>
-         {previewNote ?
-            <MarkdownPreview
-               source={editorValue}
-               style={{
-                  backgroundColor: 'transparent',
-                  height: '100%',
-                  fontSize: '16px',
-               }}
-            />
+      <Flex minH='100vh' h='fit-content' w='100vw' p='10vw' bg='gray.800'>
+         {isLoading ? null
             :
-            <MarkdownEditor
-               value={editorValue}
-               onChange={setEditorValue}
-            />
+            previewNote ?
+               <MarkdownPreview
+                  source={editorValue}
+                  style={{
+                     backgroundColor: 'transparent',
+                     height: '100%',
+                     width: '100%',
+                     fontSize: '1em',
+                  }}
+               />
+               :
+               <MarkdownEditor
+                  value={editorValue}
+                  onChange={setEditorValue}
+               />
+
          }
-      </div>
+      </Flex>
    )
 }
 

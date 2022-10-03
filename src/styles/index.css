@@ -1,20 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap');
 
-body::-webkit-scrollbar {
-  display: none;               /* width of the entire scrollbar */
+*::-webkit-scrollbar {
+  display: none;
 }
-
-body::-webkit-scrollbar-track {
-  background: lightgray;        /* color of the tracking area */
-}
-
-body::-webkit-scrollbar-thumb {
-  background-color: gray;    /* color of the scroll thumb */
-//   border-radius: 20px;       /* roundness of the scroll thumb */
-//   border: 3px solid white;  /* creates padding around scroll thumb */
-}
-
 
 /*
   CSS Reset from:
@@ -28,6 +16,7 @@ body::-webkit-scrollbar-thumb {
 *::before,
 *::after {
    box-sizing: border-box;
+   font-family: 'Rubik', sans-serif;
 }
 
 /*
@@ -43,7 +32,6 @@ body::-webkit-scrollbar-thumb {
 html,
 body {
    height: 100%;
-   font-family: 'Rubik', sans-serif;
 }
 
 /*

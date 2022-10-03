@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { IUserData } from '../interfaces';
 import { useAwaitPoll } from '../functions';
+import { ChakraProvider } from '@chakra-ui/react'
 
 // Components and pages
 import LandingPage from '../pages/LandingPage';
@@ -35,14 +36,16 @@ const App = () => {
 
    return (
       <BrowserRouter>
-         <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
-            <Routes>
-               <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
-               <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
-               <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
-               <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote}/>}  />
-            </Routes>
-         </Layout>
+         <ChakraProvider>
+            <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
+               <Routes>
+                  <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
+                  <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
+                  <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
+                  <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote} />} />
+               </Routes>
+            </Layout>
+         </ChakraProvider>
       </BrowserRouter>
    );
 }

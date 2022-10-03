@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
@@ -12,13 +12,13 @@ type Props = {
 const myTheme = createTheme({
    theme: 'dark',
    settings: {
-      background: '#22272e',
-      foreground: '#75baff',
+      background: '#1a202c',
+      foreground: '#c9d1d9',
       caret: '#5d00ff',
-      selection: '#036dd626',
+      selection: '#2c3138',
       selectionMatch: '#036dd626',
       lineHighlight: '#8a91991a',
-      gutterBackground: '#22272e',
+      gutterBackground: '#1a202c',
       gutterForeground: '#8a919966',
    },
    styles: [
@@ -36,6 +36,12 @@ const myTheme = createTheme({
       { tag: t.angleBracket, color: '#5c6166' },
       { tag: t.tagName, color: '#5c6166' },
       { tag: t.attributeName, color: '#5c6166' },
+      { tag: t.heading1, color: 'red' },
+      { tag: t.heading2, color: 'yellow' },
+      { tag: t.heading3, color: 'blue' },
+      { tag: t.heading4, color: 'green' },
+      { tag: t.heading5, color: 'purple' },
+      { tag: t.heading6, color: 'teal' }
    ],
 });
 

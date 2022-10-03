@@ -6,6 +6,7 @@ import { IUserData } from '../interfaces'
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import MarkdownEditor from '../components/MarkdownEditor';
 import styles from '../styles/pages/NotePage.module.scss'
+import { Box, Flex } from '@chakra-ui/react';
 
 type Props = {
    noteData: IUserData,
@@ -21,17 +22,14 @@ const NotePage = ({ noteData = { id: 1, title: 'test', content: 'test' } }: Prop
    }, [])
 
    return (
-      <div className={styles.page}>
-         <button onClick={() => {
-            navigate('/home')
-         }}>Go back</button>
-         <div className={styles.editor}>
+      <Flex minH='100vh' h='fit-content' align='flex-start' bgColor='gray.800' pt='50px'>
+         <Box w='50%' fontSize='1.5em' fontFamily='sans-serif'>
             <MarkdownEditor
                value={editorValue}
                onChange={setEditorValue}
             />
-         </div>
-         <div className={styles.preview}>
+         </Box>
+         <Box w='50%' pl='1em' pt='1em'>
             <MarkdownPreview
                source={editorValue}
                style={{
@@ -40,9 +38,8 @@ const NotePage = ({ noteData = { id: 1, title: 'test', content: 'test' } }: Prop
                   fontSize: '16px'
                }}
             />
-         </div>
-
-      </div>
+         </Box>
+      </Flex>
    )
 }
 

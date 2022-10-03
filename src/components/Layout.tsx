@@ -1,6 +1,5 @@
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import Titlebar from './Titlebar';
-import '../styles/components/Layout.scss'
 import StickyNoteTitle from "./StickyNoteTitle";
 
 type Props = {
