@@ -1,5 +1,5 @@
-export interface IDirData {
-   id:  number,
+export interface IDirData extends Array<any> {
+   id: number;
    name: string;
    content: string;
 }

@@ -25,25 +25,24 @@ contextBridge.exposeInMainWorld('electron', {
       processDirectory() {
          if (files.length > 0) return null;
          ipcRenderer.send('get-dir-contents');
-         ipcRenderer.on('return-files', (event, file) => {
-            files.push(file);
+         ipcRenderer.once('return-files', (event, filesArr) => {
+            files.push(filesArr);
          });
-         ipcRenderer.on('return-folders', (event, folder) => {
-            folders.push(folder)
+         ipcRenderer.once('return-folders', (event, foldersArr) => {
+            folders.push(foldersArr)
          })
       },
       getFiles() {
          if (files.length !== 0) return files;
       },
       getFolders() {
-         if (folders.length !== 0) return folders;
+         if (files.length !== 0) return folders;
       }
    },
    directoryApi: {
       setNewDirectory(dir) {
-         files = []
-         folders = []
-         console.log(files, folders)
+         files.length = 0
+         folders.length = 0
          ipcRenderer.send('set-dir', dir)
       }
    },

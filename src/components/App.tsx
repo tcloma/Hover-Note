@@ -11,12 +11,13 @@ import HomePage from '../pages/HomePage';
 import NotePage from '../pages/NotePage';
 import StickyNote from '../pages/StickyNote';
 import Layout from './Layout';
+import { dir } from 'console';
 
 const App = () => {
    // Global state definitions
    const [dirName, setDirName] = useState<string>('')
    const [dirFiles, setDirFiles] = useState<IDirData[]>([])
-   const [dirFolders, setDirFolders] = useState([])
+   const [dirFolders, setDirFolders] = useState<Array<string[]>>([])
    const [currentNoteId, setCurrentNoteId] = useState<number>(1)
    const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
@@ -34,10 +35,8 @@ const App = () => {
    }, [dirName])
 
    // Write a function that returns all folders inside of a dir
-
-   const uniqueFiles = [...new Map(dirFiles.map(item => [item['name'], item])).values()];
-   const uniqueFolders = [...new Set(dirFolders)];
-
+   console.log('Directory Files: ', dirFiles)
+   console.log('Directory Folders: ', dirFolders)
 
    return (
       <BrowserRouter>
@@ -45,7 +44,7 @@ const App = () => {
             <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
                <Routes>
                   <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
-                  <Route path='/home' element={<HomePage dirFiles={uniqueFiles} dirFolders={uniqueFolders} setCurrentNoteId={setCurrentNoteId} dirName={dirName} setDirName={setDirName} />} />
+                  <Route path='/home' element={<HomePage dirFiles={dirFiles[0]} dirFolders={dirFolders[0]} setCurrentNoteId={setCurrentNoteId} dirName={dirName} setDirName={setDirName} />} />
                   <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
                   <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote} />} />
                </Routes>

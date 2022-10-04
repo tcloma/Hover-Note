@@ -1,7 +1,7 @@
 // Hooks and interfaces
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAwaitPoll } from '../functions'
-import { IUserData } from '../interfaces'
+import { IDirData } from '../interfaces'
 
 // Dependencies
 import MarkdownEditor from '../components/MarkdownEditor';
@@ -15,10 +15,9 @@ type Props = {
 
 const StickyNote = ({ isSticky, previewNote }: Props) => {
    // Local state
-   const defaultObj = { id: 1, title: 'Loading', content: 'Loading...' }
+   const defaultObj = { id: 1, name: 'Loading', content: 'Loading...' }
    const [editorValue, setEditorValue] = useState('# Hello!')
-   const [noteData, setNoteData] = useState<IUserData>(defaultObj)
-   const [isLoading, setIsLoading] = useState<boolean>(true)
+   const [noteData, setNoteData] = useState<IDirData>(defaultObj)
 
    // Shorthand definitions
    const stickyNoteApi = window.electron.stickyNoteApi
@@ -31,28 +30,25 @@ const StickyNote = ({ isSticky, previewNote }: Props) => {
 
    useEffect(() => {
       setEditorValue(noteData.content)
-      setIsLoading(false)
    }, [noteData])
 
    return (
-      <Flex minH='100vh' h='fit-content' w='100vw' p='10vw' bg='gray.800'>
-         {isLoading ? null
+      <Flex minH='100vh' h='fit-content' w='100vw' p='10vw' pt='50px' bg='gray.800'>
+         {previewNote ?
+            <MarkdownPreview
+               source={editorValue}
+               style={{
+                  backgroundColor: 'transparent',
+                  height: '100%',
+                  width: '100%',
+                  fontSize: '1em',
+               }}
+            />
             :
-            previewNote ?
-               <MarkdownPreview
-                  source={editorValue}
-                  style={{
-                     backgroundColor: 'transparent',
-                     height: '100%',
-                     width: '100%',
-                     fontSize: '1em',
-                  }}
-               />
-               :
-               <MarkdownEditor
-                  value={editorValue}
-                  onChange={setEditorValue}
-               />
+            <MarkdownEditor
+               value={editorValue}
+               onChange={setEditorValue}
+            />
 
          }
       </Flex>

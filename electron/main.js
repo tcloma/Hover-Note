@@ -8,6 +8,7 @@ let childWindow;
 let childId
 let directory;
 let filesCopy = []
+let foldersCopy = []
 
 // Initial window render
 function createWindow() {
@@ -15,6 +16,8 @@ function createWindow() {
       width: 1200,
       height: 800,
       frame: false,
+      minWidth: 800,
+      minHeight: 550,
       icon: '../public/favicon.ico',
       webPreferences: {
          nodeIntegration: false,
@@ -66,6 +69,8 @@ ipcMain.on('new-child-window', (event, noteId) => {
       width: 400,
       height: 400,
       frame: false,
+      minHeight: 200,
+      minWidth: 200,
       parent: mainWindow,
       webPreferences: {
          nodeIntegration: false,
@@ -113,19 +118,21 @@ const getDirContents = async () => {
       if (item.isFile()) {
          const fileContents = await readFileContents(item.name, index)
          filesCopy.push(fileContents)
-         mainWindow.webContents.send('return-files', fileContents);
       }
       else if (item.isDirectory()) {
-         mainWindow.webContents.send('return-folders', item.name)
+         foldersCopy.push(item.name)
       } else {
          console.log('Unsupported type: ', item.name)
       }
    }
+   mainWindow.webContents.send('return-files', filesCopy);
+   mainWindow.webContents.send('return-folders', foldersCopy)
 }
 
 ipcMain.on('get-dir-contents', getDirContents);
 
 ipcMain.on('set-dir', (event, dir) => {
    directory = dir.split('\\').join('/')
-   getDirContents()
+   filesCopy.length = 0
+   foldersCopy.length = 0
 })
