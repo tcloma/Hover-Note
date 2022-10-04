@@ -35,9 +35,13 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
       <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
          <Breadcrumb spacing='8px' color='whiteAlpha.900' pos='absolute' top='60px' left='1em' separator={<FontAwesomeIcon icon={faChevronRight} />}>
             {splitDirName.map((name, index) => {
+               const lastItem = index + 1 === splitDirName.length
                return (
                   <BreadcrumbItem key={index + 1}>
-                     <BreadcrumbLink href='#'
+                     <BreadcrumbLink href='#' _hover={{
+                        'color': 'teal.300'
+                     }}
+                        color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
                         onClick={() => handleBreadcrumbClick(name)}>
                         {name}
                      </BreadcrumbLink>
@@ -45,7 +49,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
                )
             })}
          </Breadcrumb>
-         <HStack pos='absolute' top='90px' left='1em'>
+         <Wrap pos='absolute' top='90px' left='1em'>
             {dirFolders.map((folder, index) => {
                return (
                   <Button variant='outline' color='whiteAlpha.900' key={index + 1}
@@ -55,7 +59,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
                   </Button>
                )
             })}
-         </HStack>
+         </Wrap>
          <Wrap p='1em' w='95%' spacing='1em' justify='center'>
             {dirFiles.map((item, index) => {
                return (

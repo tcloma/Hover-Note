@@ -110,19 +110,30 @@ ipcMain.on('open-dialog', () => {
       });
 });
 
+const isIgnored = (item) => {
+   return item.split('')[0] !== '.'
+}
+
+const isValid = (item) => {
+   return ['.md', '.txt'].includes(path.extname(item))
+}
+
 const getDirContents = async () => {
    if (directory === undefined) return;
    const directoryContents = await fs.readdir(directory, { withFileTypes: true });
-   console.log(directoryContents)
    for (const [index, item] of directoryContents.entries()) {
-      if (item.isFile()) {
-         const fileContents = await readFileContents(item.name, index)
-         filesCopy.push(fileContents)
-      }
-      else if (item.isDirectory()) {
-         foldersCopy.push(item.name)
-      } else {
-         console.log('Unsupported type: ', item.name)
+      if (isIgnored(item.name)) {
+         if (item.isFile()) {
+            if (isValid(item.name)) {
+               const fileContents = await readFileContents(item.name, index)
+               filesCopy.push(fileContents)
+            }
+         }
+         else if (item.isDirectory()) {
+            foldersCopy.push(item.name)
+         } else {
+            console.log('Unsupported type: ', item.name)
+         }
       }
    }
    mainWindow.webContents.send('return-files', filesCopy);

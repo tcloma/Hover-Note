@@ -34,7 +34,7 @@ const App = () => {
       useAwaitPoll(filesApi.getFolders, setDirFolders)
    }, [dirName])
 
-   // Write a function that returns all folders inside of a dir
+   // Files received from electron
    console.log('Directory Files: ', dirFiles)
    console.log('Directory Folders: ', dirFolders)
 
