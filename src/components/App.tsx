@@ -22,6 +22,7 @@ const App = () => {
    const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
+   // Create state for value of sticky note to be passed down to sticky note title
 
    // Shorthand definitions
    const filesApi = window.electron.filesApi

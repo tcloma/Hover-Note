@@ -6,7 +6,6 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import MarkdownEditor from '../components/MarkdownEditor';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import BreadCrumbWrapper from '../components/BreadCrumbWrapper';
-import Toolbar from '../components/Toolbar';
 
 type Props = {
    noteData: IDirData,
@@ -30,14 +29,10 @@ const NotePage = ({ noteData = { id: 1, name: 'test', content: 'test' }, dirName
             noteName={name}
             setDirName={setDirName}
             processFiles={processFiles}
+            name={name}
+            editorValue={editorValue}
          />
-         <Toolbar />
          <Flex minH='100vh' h='fit-content' align='flex-start' bgColor='gray.800' pt='100px'>
-            <Button pos='absolute' zIndex='overlay' onClick={() => {
-               window.electron.filesApi.writeFile(name, editorValue)
-            }}>
-               Save
-            </Button>
             <Box w='50%' fontSize='1.5em' fontFamily='sans-serif'>
                <MarkdownEditor
                   value={editorValue}

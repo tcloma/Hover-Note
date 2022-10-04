@@ -3,17 +3,20 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading } from "@chakra-ui/
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
+import Toolbar from '../components/Toolbar'
 
 type Props = {
    directory: string,
    noteName?: string,
    setDirName: Dispatch<SetStateAction<string>>,
    processFiles(): any,
+   name: string,
+   editorValue: string
 }
 
 // Make a reference to page to conditionally render stlying and tooblar
 
-const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName }: Props) => {
+const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue }: Props) => {
    const splitDirName = noteName ? [...directory.toString().split('\\'), noteName] : directory.toString().split('\\')
    const directoryApi = window.electron.directoryApi
    const navigate = useNavigate()
@@ -26,35 +29,39 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName }: Pr
    }
 
    return (
-      <Breadcrumb
-         spacing='8px' w='100%' p='10px'
-         bgColor='gray.800' color='whiteAlpha.900'
-         zIndex='overlay' pos='fixed'
-         top='50px' left='1em'
-         // boxShadow='md'
-         separator={<FontAwesomeIcon icon={faChevronRight} />}
-      >
-         {splitDirName.map((name, index) => {
-            const lastItem = index + 1 === splitDirName.length
-            const lastDir = index + 1 === splitDirName.length - 1
-            return (
-               <BreadcrumbItem key={index + 1}>
-                  <BreadcrumbLink href='#' _hover={{
-                     'textDecoration': 'underline'
-                  }}
-                     color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
-                     onClick={() => {
-                        handleBreadcrumbClick(name)
-                        if (lastDir) {
-                           processFiles()
-                        }
-                     }}>
-                     {name}
-                  </BreadcrumbLink>
-               </BreadcrumbItem>
-            )
-         })}
-      </Breadcrumb>
+      <>
+
+         <Breadcrumb
+            spacing='8px' w='100%' p='10px'
+            bgColor='gray.800' color='whiteAlpha.900'
+            zIndex='overlay' pos='fixed'
+            top='50px' left='1em'
+            // boxShadow='md'
+            separator={<FontAwesomeIcon icon={faChevronRight} />}
+         >
+            {splitDirName.map((name, index) => {
+               const lastItem = index + 1 === splitDirName.length
+               const lastDir = index + 1 === splitDirName.length - 1
+               return (
+                  <BreadcrumbItem key={index + 1}>
+                     <BreadcrumbLink href='#' _hover={{
+                        'textDecoration': 'underline'
+                     }}
+                        color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
+                        onClick={() => {
+                           handleBreadcrumbClick(name)
+                           if (lastDir) {
+                              processFiles()
+                           }
+                        }}>
+                        {name}
+                     </BreadcrumbLink>
+                  </BreadcrumbItem>
+               )
+            })}
+         </Breadcrumb>
+         <Toolbar name={name} editorValue={editorValue} isHome={processFiles === undefined}/>
+      </>
    )
 }
 
