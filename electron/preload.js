@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const files = [];
-const folders = []
+let files = [];
+let folders = []
 let childFile;
 let dirPath;
 
@@ -33,14 +33,17 @@ contextBridge.exposeInMainWorld('electron', {
          })
       },
       getFiles() {
-         return files;
+         if (files.length !== 0) return files;
       },
       getFolders() {
-         return folders
+         if (folders.length !== 0) return folders;
       }
    },
    directoryApi: {
       setNewDirectory(dir) {
+         files = []
+         folders = []
+         console.log(files, folders)
          ipcRenderer.send('set-dir', dir)
       }
    },

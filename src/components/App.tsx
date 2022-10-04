@@ -35,13 +35,17 @@ const App = () => {
 
    // Write a function that returns all folders inside of a dir
 
+   const uniqueFiles = [...new Map(dirFiles.map(item => [item['name'], item])).values()];
+   const uniqueFolders = [...new Set(dirFolders)];
+
+
    return (
       <BrowserRouter>
          <ChakraProvider>
             <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
                <Routes>
                   <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
-                  <Route path='/home' element={<HomePage dirFiles={dirFiles} dirFolders={dirFolders} setCurrentNoteId={setCurrentNoteId} dirName={dirName} setDirName={setDirName} />} />
+                  <Route path='/home' element={<HomePage dirFiles={uniqueFiles} dirFolders={uniqueFolders} setCurrentNoteId={setCurrentNoteId} dirName={dirName} setDirName={setDirName} />} />
                   <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
                   <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote} />} />
                </Routes>

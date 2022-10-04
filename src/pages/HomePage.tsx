@@ -25,8 +25,11 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
 
    const handleFolderButtonClick = (folder: string) => {
       const newDirName = [...splitDirName, folder].join('\\')
+      window.electron.directoryApi.setNewDirectory(newDirName)
       setDirName(newDirName)
    }
+
+   console.log('Set Homepage', [...new Set(dirFiles)])
 
    return (
       <Flex h='100vh' justify='center' align='center' flexFlow='column' bg='gray.800'>
@@ -49,7 +52,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
             })}
          </HStack>
          <Wrap p='1em' w='95%' spacing='1em' justify='center'>
-            {dirFiles.map((item, index) => {
+            {[...new Set(dirFiles)].map((item, index) => {
                return (
                   <WrapItem key={item.id}>
                      <Note

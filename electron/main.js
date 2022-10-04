@@ -40,6 +40,7 @@ app.on('activate', () => {
       createWindow();
    }
 });
+
 // Title bar controls
 ipcMain.on('maximize', () => {
    if (mainWindow.isMaximized()) {
@@ -98,18 +99,16 @@ ipcMain.on('open-dialog', () => {
       .then((result) => {
          if (result.canceled) return null;
          mainWindow.webContents.send('return-path', result.filePaths);
-         const convertedPath = result.filePaths
-            .toString()
-            .split(path.sep)
-            .join(path.posix.sep);
+         const convertedPath = result.filePaths.toString().split(path.sep).join(path.posix.sep);
          directory = convertedPath;
          console.log('Directory: ', directory);
       });
 });
 
-ipcMain.on('get-dir-contents', async () => {
+const getDirContents = async () => {
    if (directory === undefined) return;
    const directoryContents = await fs.readdir(directory, { withFileTypes: true });
+   console.log(directoryContents)
    for (const [index, item] of directoryContents.entries()) {
       if (item.isFile()) {
          const fileContents = await readFileContents(item.name, index)
@@ -122,7 +121,11 @@ ipcMain.on('get-dir-contents', async () => {
          console.log('Unsupported type: ', item.name)
       }
    }
-});
+}
 
+ipcMain.on('get-dir-contents', getDirContents);
 
-// ipcMain.on('set-dir', )
+ipcMain.on('set-dir', (event, dir) => {
+   directory = dir.split('\\').join('/')
+   getDirContents()
+})
