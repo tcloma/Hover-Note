@@ -37,6 +37,12 @@ contextBridge.exposeInMainWorld('electron', {
       },
       getFolders() {
          if (files.length !== 0) return folders;
+      },
+      writeFile(file, content) {
+         ipcRenderer.send('write-file', {
+            file: file,
+            content: content
+         })
       }
    },
    directoryApi: {

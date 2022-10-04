@@ -2,9 +2,8 @@
 import React, { SetStateAction, Dispatch } from "react"
 import { IDirData } from '../interfaces'
 // Libraries and components
-import { Flex, Button, HStack, Wrap, WrapItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { Flex, Button, Text, Wrap, WrapItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading } from "@chakra-ui/react"
+import BreadCrumbWrapper from "../components/BreadCrumbWrapper"
 import Note from "../components/Note"
 
 type Props = {
@@ -12,18 +11,12 @@ type Props = {
    dirFiles: IDirData[],
    dirFolders: string[],
    setCurrentNoteId: Dispatch<SetStateAction<number>>,
-   setDirName: Dispatch<SetStateAction<string>>
+   setDirName: Dispatch<SetStateAction<string>>,
 }
 
 const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName }: Props) => {
    const splitDirName = dirName.toString().split('\\')
    const directoryApi = window.electron.directoryApi
-
-   const handleBreadcrumbClick = (name: string) => {
-      const breadCrumbBreakPoint = splitDirName.slice(0, splitDirName.indexOf(name) + 1).join('\\')
-      directoryApi.setNewDirectory(breadCrumbBreakPoint)
-      setDirName(breadCrumbBreakPoint)
-   }
 
    const handleFolderButtonClick = (folder: string) => {
       const newDirName = [...splitDirName, folder].join('\\')
@@ -31,36 +24,9 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
       setDirName(newDirName)
    }
 
-   return (
-      <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
-         <Breadcrumb spacing='8px' color='whiteAlpha.900' pos='absolute' top='60px' left='1em' separator={<FontAwesomeIcon icon={faChevronRight} />}>
-            {splitDirName.map((name, index) => {
-               const lastItem = index + 1 === splitDirName.length
-               return (
-                  <BreadcrumbItem key={index + 1}>
-                     <BreadcrumbLink href='#' _hover={{
-                        'color': 'teal.300'
-                     }}
-                        color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
-                        onClick={() => handleBreadcrumbClick(name)}>
-                        {name}
-                     </BreadcrumbLink>
-                  </BreadcrumbItem>
-               )
-            })}
-         </Breadcrumb>
-         <Wrap pos='absolute' top='90px' left='1em'>
-            {dirFolders.map((folder, index) => {
-               return (
-                  <Button variant='outline' color='whiteAlpha.900' key={index + 1}
-                     onClick={() => handleFolderButtonClick(folder)}
-                  >
-                     {folder}
-                  </Button>
-               )
-            })}
-         </Wrap>
-         <Wrap p='1em' w='95%' spacing='1em' justify='center'>
+   const NoteCards = () => {
+      return (
+         <>
             {dirFiles.map((item, index) => {
                return (
                   <WrapItem key={item.id}>
@@ -73,8 +39,34 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
                   </WrapItem>
                )
             })}
-         </Wrap>
-      </Flex>
+         </>
+      )
+   }
+
+   return (
+      <>
+         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} />
+         <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
+            <Wrap pos='fixed' top='100px' left='1.5em'>
+               {dirFolders.map((folder, index) => {
+                  return (
+                     <Button variant='outline' color='whiteAlpha.900' key={index + 1}
+                        onClick={() => handleFolderButtonClick(folder)}
+                     >
+                        {folder}
+                     </Button>
+                  )
+               })}
+            </Wrap>
+            {dirFiles.length === 0 ?
+               <Text fontSize='5xl' color='whiteAlpha.900'> Empty Directory </Text>
+               :
+               <Wrap p='1em' w='95%' spacing='1em' justify='center'>
+                  <NoteCards />
+               </Wrap>
+            }
+         </Flex>
+      </>
    )
 }
 

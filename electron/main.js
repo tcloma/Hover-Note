@@ -71,7 +71,6 @@ ipcMain.on('new-child-window', (event, noteId) => {
       frame: false,
       minHeight: 200,
       minWidth: 200,
-      parent: mainWindow,
       webPreferences: {
          nodeIntegration: false,
          contextIsolation: true,
@@ -146,4 +145,15 @@ ipcMain.on('set-dir', (event, dir) => {
    directory = dir.split('\\').join('/')
    filesCopy.length = 0
    foldersCopy.length = 0
+})
+
+ipcMain.on('write-file', (event, args) => {
+   const { file, content } = args
+   fs.writeFile(`${directory}/${file}`, content, (err) => {
+      if (err) {
+         console.log(err)
+      } else {
+         console.log('Success!')
+      }
+   })
 })
