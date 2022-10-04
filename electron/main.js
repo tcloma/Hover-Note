@@ -2,12 +2,11 @@ const { app, BrowserWindow, ipcMain, dialog, ipcRenderer } = require('electron')
 const path = require('path');
 const fs = require('fs').promises;
 
-// Scoped variables
+// Variable references
 let mainWindow;
 let childWindow;
 let childId
 let directory;
-
 let filesCopy = []
 
 // Initial window render
@@ -30,6 +29,17 @@ function createWindow() {
 }
 app.whenReady().then(createWindow);
 
+// Close app when all windows are closed
+app.on('window-all-closed', () => {
+   if (process.platform !== 'darwin') {
+      app.quit();
+   }
+});
+app.on('activate', () => {
+   if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+   }
+});
 // Title bar controls
 ipcMain.on('maximize', () => {
    if (mainWindow.isMaximized()) {
@@ -49,7 +59,7 @@ ipcMain.on('quit', (event, win) => {
    }
 });
 
-const createChildWindow = (noteId) => {
+ipcMain.on('new-child-window', (event, noteId) => {
    childId = noteId
    childWindow = new BrowserWindow({
       width: 400,
@@ -63,36 +73,28 @@ const createChildWindow = (noteId) => {
       },
    });
    childWindow.loadURL(`http://localhost:5173/sticky/${noteId}`);
-   childWindow.setAlwaysOnTop(true, 'scren')
-};
+   childWindow.setAlwaysOnTop(true, 'screen')
+});
 
 ipcMain.on('get-child-data', () => {
    const childFile = filesCopy.find(file => file.id === childId)
-   // console.log(childFile)
    childWindow.webContents.send('return-child-data', childFile)
 })
 
-ipcMain.on('new-window', (event, noteId) => {
-   createChildWindow(noteId);
-});
+const readFileContents = async (file, index) => {
+   const fileContent = await fs.readFile(`${directory}/${file}`, 'utf-8');
+   const fileObject = {
+      id: index,
+      name: file,
+      content: fileContent,
+   };
+   return fileObject
+}
 
-// Close app when all windows are closed
-app.on('window-all-closed', () => {
-   if (process.platform !== 'darwin') {
-      app.quit();
-   }
-});
-app.on('activate', () => {
-   if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-   }
-});
-
-const openDirectoryDialog = () => {
-   dialog
-      .showOpenDialog(mainWindow, {
-         properties: ['openFile', 'openDirectory'],
-      })
+ipcMain.on('open-dialog', () => {
+   dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile', 'openDirectory'],
+   })
       .then((result) => {
          if (result.canceled) return null;
          mainWindow.webContents.send('return-path', result.filePaths);
@@ -103,26 +105,24 @@ const openDirectoryDialog = () => {
          directory = convertedPath;
          console.log('Directory: ', directory);
       });
-};
+});
 
-ipcMain.on('open-dialog', openDirectoryDialog);
-
-const readFilesFromDirectory = async () => {
+ipcMain.on('get-dir-contents', async () => {
    if (directory === undefined) return;
-   const directoryContents = await fs.readdir(directory);
-   for (const [index, fileName] of directoryContents.entries()) {
-      const fileContent = await fs.readFile(
-         `${directory}/${fileName}`,
-         'utf-8'
-      );
-      const fileObject = {
-         id: index + 1,
-         title: fileName,
-         content: fileContent,
-      };
-      filesCopy.push(fileObject)
-      mainWindow.webContents.send('return-files', fileObject);
+   const directoryContents = await fs.readdir(directory, { withFileTypes: true });
+   for (const [index, item] of directoryContents.entries()) {
+      if (item.isFile()) {
+         const fileContents = await readFileContents(item.name, index)
+         filesCopy.push(fileContents)
+         mainWindow.webContents.send('return-files', fileContents);
+      }
+      else if (item.isDirectory()) {
+         mainWindow.webContents.send('return-folders', item.name)
+      } else {
+         console.log('Unsupported type: ', item.name)
+      }
    }
-};
+});
 
-ipcMain.on('get-files', readFilesFromDirectory);
+
+// ipcMain.on('set-dir', )

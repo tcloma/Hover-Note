@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const files = [];
+const folders = []
 let childFile;
 let dirPath;
 
@@ -17,20 +18,31 @@ contextBridge.exposeInMainWorld('electron', {
    },
    windowApi: {
       newWindow(noteId) {
-         ipcRenderer.send('new-window', noteId);
+         ipcRenderer.send('new-child-window', noteId);
       },
    },
    filesApi: {
-      processFiles() {
+      processDirectory() {
          if (files.length > 0) return null;
-         ipcRenderer.send('get-files');
+         ipcRenderer.send('get-dir-contents');
          ipcRenderer.on('return-files', (event, file) => {
             files.push(file);
          });
+         ipcRenderer.on('return-folders', (event, folder) => {
+            folders.push(folder)
+         })
       },
       getFiles() {
          return files;
       },
+      getFolders() {
+         return folders
+      }
+   },
+   directoryApi: {
+      setNewDirectory(dir) {
+         ipcRenderer.send('set-dir', dir)
+      }
    },
    dialogApi: {
       openDialog() {
@@ -48,7 +60,6 @@ contextBridge.exposeInMainWorld('electron', {
          console.log('clicked')
          ipcRenderer.send('get-child-data');
          ipcRenderer.on('return-child-data', (event, data) => {
-            console.log(data)
             childFile = data
          })
       },

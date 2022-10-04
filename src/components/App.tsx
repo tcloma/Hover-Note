@@ -1,7 +1,7 @@
 // Hooks and types/interfaces
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { IUserData } from '../interfaces';
+import { IDirData } from '../interfaces';
 import { useAwaitPoll } from '../functions';
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -14,25 +14,26 @@ import Layout from './Layout';
 
 const App = () => {
    // Global state definitions
-   const [userFiles, setUserFiles] = useState<IUserData[]>([])
-   const [currentNoteId, setCurrentNoteId] = useState<number>(1)
    const [dirName, setDirName] = useState<string>('')
+   const [dirFiles, setDirFiles] = useState<IDirData[]>([])
+   const [dirFolders, setDirFolders] = useState([])
+   const [currentNoteId, setCurrentNoteId] = useState<number>(1)
    const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
 
    // Shorthand definitions
    const filesApi = window.electron.filesApi
-   const currentNote = userFiles.find(file => file.id === currentNoteId)!
+   const currentNote = dirFiles.find(file => file.id === currentNoteId)!
 
-   // Set timeout to give files time to process
    useEffect(() => {
       if (initialRender) { setInitialRender(false); return }
-      // console.log('Processing files')
-      filesApi.processFiles()
-      useAwaitPoll(filesApi.getFiles, setUserFiles)
+      filesApi.processDirectory()
+      useAwaitPoll(filesApi.getFiles, setDirFiles)
+      useAwaitPoll(filesApi.getFolders, setDirFolders)
    }, [dirName])
 
+   // Write a function that returns all folders inside of a dir
 
    return (
       <BrowserRouter>
@@ -40,7 +41,7 @@ const App = () => {
             <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
                <Routes>
                   <Route path='/' element={<LandingPage dirName={dirName} setDirName={setDirName} />} />
-                  <Route path='/home' element={<HomePage userFiles={userFiles} setCurrentNoteId={setCurrentNoteId} />} />
+                  <Route path='/home' element={<HomePage dirFiles={dirFiles} dirFolders={dirFolders} setCurrentNoteId={setCurrentNoteId} dirName={dirName} setDirName={setDirName} />} />
                   <Route path='/note/:id' element={<NotePage noteData={currentNote} />} />
                   <Route path='/sticky/:id' element={<StickyNote isSticky={setIsStickyNote} previewNote={previewNote} />} />
                </Routes>

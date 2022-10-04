@@ -1,24 +1,60 @@
-import { Flex, Wrap, WrapItem } from "@chakra-ui/react"
+// Hooks and dependencies
 import React, { SetStateAction, Dispatch } from "react"
+import { IDirData } from '../interfaces'
+// Libraries and components
+import { Flex, Button, HStack, Wrap, WrapItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
 import Note from "../components/Note"
-import { IUserData } from '../interfaces'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
-   userFiles: IUserData[],
-   setCurrentNoteId: Dispatch<SetStateAction<number>>
+   dirName: string
+   dirFiles: IDirData[],
+   dirFolders: any[],
+   setCurrentNoteId: Dispatch<SetStateAction<number>>,
+   setDirName: Dispatch<SetStateAction<string>>
 }
 
-const HomePage = ({ userFiles, setCurrentNoteId }: Props) => {
+const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName }: Props) => {
+   const splitDirName = dirName.toString().split('\\')
+
+   const handleBreadcrumbClick = (name: string) => {
+      const breadCrumbBreakPoint = splitDirName.slice(0, splitDirName.indexOf(name) + 1).join('\\')
+      setDirName(breadCrumbBreakPoint)
+   }
+
+   const handleFolderButtonClick = (folder: string) => {
+      const newDirName = [...splitDirName, folder].join('\\')
+      setDirName(newDirName)
+   }
+
    return (
-      <Flex h='100vh' justify='center' align='center' bg='gray.800'>
-         <Wrap p='1em' w='95%'spacing='1em' justify='center'>
-            {userFiles.map((item) => {
+      <Flex h='100vh' justify='center' align='center' flexFlow='column' bg='gray.800'>
+         <Breadcrumb spacing='8px' color='whiteAlpha.900' pos='absolute' top='60px' left='1em' separator={<FontAwesomeIcon icon={faChevronRight} />}>
+            {splitDirName.map((name, index) => {
                return (
-                  <WrapItem>
+                  <BreadcrumbItem key={index + 1}>
+                     <BreadcrumbLink href='#' onClick={() => handleBreadcrumbClick(name)}>{name}</BreadcrumbLink>
+                  </BreadcrumbItem>
+               )
+            })}
+         </Breadcrumb>
+         <HStack pos='absolute' top='90px' left='1em'>
+            {dirFolders.map((folder, index) => {
+               return (
+                  <Button variant='outline' color='whiteAlpha.900' key={index + 1} onClick={() => handleFolderButtonClick(folder)}>
+                     {folder}
+                  </Button>
+               )
+            })}
+         </HStack>
+         <Wrap p='1em' w='95%' spacing='1em' justify='center'>
+            {dirFiles.map((item, index) => {
+               return (
+                  <WrapItem key={item.id}>
                      <Note
-                        key={item.id}
                         id={item.id}
-                        title={item.title}
+                        title={item.name}
                         content={item.content}
                         setCurrentNoteId={setCurrentNoteId}
                      />
