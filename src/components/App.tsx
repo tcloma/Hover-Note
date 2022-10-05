@@ -1,6 +1,7 @@
 // Hooks and types/interfaces
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IDirData } from '../interfaces';
 import { useAwaitPoll } from '../functions';
 import { ChakraProvider } from '@chakra-ui/react'
@@ -11,7 +12,6 @@ import HomePage from '../pages/HomePage';
 import NotePage from '../pages/NotePage';
 import StickyNote from '../pages/StickyNote';
 import Layout from './Layout';
-import { dir } from 'console';
 
 const App = () => {
    // Global state definitions
@@ -19,7 +19,8 @@ const App = () => {
    const [dirFiles, setDirFiles] = useState<IDirData[]>([])
    const [dirFolders, setDirFolders] = useState<Array<string[]>>([])
    const [currentNoteId, setCurrentNoteId] = useState<number>(0)
-   const [initialRender, setInitialRender] = useState<boolean>(true)
+   const [hasInitDir, setHasInitDir] = useState<boolean>(false)
+   const [initialRender, setInitialRender] = useState<boolean>(false)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
    // Create state for value of sticky note to be passed down to sticky note title
@@ -27,6 +28,7 @@ const App = () => {
    // Shorthand definitions
    const filesApi = window.electron.filesApi
    const currentNote = dirFiles[0]?.find(file => file.id === currentNoteId)!
+   const initialDirectory = filesApi.checkInitialDirectory()
 
    const processFiles = () => {
       filesApi.processDirectory()
@@ -37,7 +39,11 @@ const App = () => {
    // Fetching data from Electron
    useEffect(() => {
       if (initialRender) { setInitialRender(false); return }
-      processFiles()
+      if (initialDirectory) {
+         setHasInitDir(true)
+         setDirName(initialDirectory)
+         processFiles()
+      }
    }, [dirName])
 
    // Files received from electron
@@ -47,11 +53,16 @@ const App = () => {
    return (
       <BrowserRouter>
          <ChakraProvider>
-            <Layout stickyNote={isStickyNote} previewNote={previewNote} setPreviewNote={setPreviewNote}>
+            <Layout
+               stickyNote={isStickyNote}
+               previewNote={previewNote}
+               setPreviewNote={setPreviewNote}
+            >
                <Routes>
                   <Route path='/' element={
                      <LandingPage
                         dirName={dirName}
+                        hasInitDir={hasInitDir}
                         setDirName={setDirName}
                      />}
                   />

@@ -1,14 +1,32 @@
-const { app, BrowserWindow, ipcMain, dialog, ipcRenderer } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
 // Variable references
 let mainWindow;
 let childWindow;
-let childId
+let childId;
 let directory;
-let filesCopy = []
-let foldersCopy = []
+let filesCopy = [];
+let foldersCopy = [];
+
+// let homeDir
+
+const checkForHomeDir = async () => {
+   const checkDir = app.getPath('home')
+   const dirContents = await fs.readdir(checkDir, { withFileTypes: true })
+   for (const item of dirContents) {
+      if (item.isFile()) {
+         if (item.name === '.hoverconfig.txt') {
+            const configFileContents = await fs.readFile(`${checkDir}\\${item.name}`, 'utf-8')
+            directory = configFileContents
+            console.log(directory)
+            mainWindow.webContents.send('home-directory', directory)
+         }
+      }
+   }
+}
+
 
 // Initial window render
 function createWindow() {
@@ -30,7 +48,10 @@ function createWindow() {
    mainWindow.maximize();
    mainWindow.webContents.openDevTools({ mode: 'detach' });
 }
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+   createWindow()
+   checkForHomeDir()
+});
 
 // Close app when all windows are closed
 app.on('window-all-closed', () => {
