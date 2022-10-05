@@ -22,6 +22,7 @@ const App = () => {
    const [initialRender, setInitialRender] = useState<boolean>(false)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
+   const [windowId, setWindowId] = useState()
    // Create state for value of sticky note to be passed down to sticky note title
 
    // Shorthand definitions
@@ -38,6 +39,7 @@ const App = () => {
    // Fetching data from Electron
    useEffect(() => {
       if (initialRender) { setInitialRender(false); return }
+      if (isStickyNote === true) return;
       if (initialDirectory) {
          setHasInitDir(true)
          setDirName(initialDirectory)
@@ -59,6 +61,7 @@ const App = () => {
                stickyNote={isStickyNote}
                previewNote={previewNote}
                setPreviewNote={setPreviewNote}
+               windowId={windowId}
             >
                <Routes>
                   <Route path='/' element={
@@ -89,6 +92,7 @@ const App = () => {
                      <StickyNote
                         previewNote={previewNote}
                         isSticky={setIsStickyNote}
+                        setWindowId={setWindowId}
                      />}
                   />
                </Routes>

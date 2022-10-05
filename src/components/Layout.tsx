@@ -6,15 +6,16 @@ type Props = {
    children: ReactNode,
    stickyNote: boolean,
    previewNote: boolean,
-   setPreviewNote: Dispatch<SetStateAction<boolean>>
+   setPreviewNote: Dispatch<SetStateAction<boolean>>,
+   windowId: number | undefined
 }
 
 
-const Layout = ({ children, stickyNote, previewNote,setPreviewNote }: Props) => {
+const Layout = ({ children, stickyNote, previewNote, setPreviewNote, windowId }: Props) => {
    return (
       <>
          {stickyNote ?
-            <StickyNoteTitle previewNote={previewNote} setPreviewNote={setPreviewNote} />
+            <StickyNoteTitle previewNote={previewNote} setPreviewNote={setPreviewNote} windowId={windowId} />
             :
             <Titlebar />
          }

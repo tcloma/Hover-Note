@@ -6,10 +6,11 @@ import { Flex, Spacer, Box, HStack, Button } from "@chakra-ui/react";
 
 type Props = {
    previewNote: boolean,
-   setPreviewNote: Dispatch<SetStateAction<boolean>>
+   setPreviewNote: Dispatch<SetStateAction<boolean>>,
+   windowId: number | undefined
 }
 
-const StickyNoteTitle = ({ previewNote, setPreviewNote }: Props) => {
+const StickyNoteTitle = ({ previewNote, setPreviewNote, windowId }: Props) => {
    const titleBar = window.electron.titleBarApi
 
    return (
@@ -24,7 +25,7 @@ const StickyNoteTitle = ({ previewNote, setPreviewNote }: Props) => {
          }}
       >
          <Box fontSize='xl' color='teal.400'>
-            <FontAwesomeIcon icon={faPaperPlane} />
+            <FontAwesomeIcon icon={faPaperPlane} /> {windowId}
          </Box>
          <Spacer />
          <HStack>
@@ -44,7 +45,7 @@ const StickyNoteTitle = ({ previewNote, setPreviewNote }: Props) => {
                }
             </Button>
             <Button
-               onClick={() => titleBar.quit()}
+               onClick={() => titleBar.quit(windowId)}
                _hover={{ bg: 'red.500' }}
                variant='ghost'
                title='Quit'

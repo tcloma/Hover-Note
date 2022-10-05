@@ -66,7 +66,7 @@ const Titlebar = () => {
                   }
                </Button>
                <Button
-                  onClick={() => titleBar.quit('main')}
+                  onClick={() => titleBar.quit()}
                   _hover={{ bg: 'red.500' }}
                   variant='ghost'
                   title='Quit'

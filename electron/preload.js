@@ -78,6 +78,7 @@ contextBridge.exposeInMainWorld('electron', {
          console.log('clicked')
          ipcRenderer.send('get-child-data');
          ipcRenderer.on('return-child-data', (event, data) => {
+            console.log(data)
             childFile = data
          })
       },

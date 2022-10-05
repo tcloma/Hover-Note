@@ -10,14 +10,20 @@ import { Flex } from '@chakra-ui/react';
 
 type Props = {
    isSticky: Dispatch<SetStateAction<boolean>>,
-   previewNote: boolean
+   previewNote: boolean,
+   setWindowId: Dispatch<SetStateAction<number>>
 }
 
-const StickyNote = ({ isSticky, previewNote }: Props) => {
+interface INoteData {
+   winId: number,
+   data: IDirData
+}
+
+const StickyNote = ({ isSticky, previewNote, setWindowId }: Props) => {
    // Local state
-   const defaultObj = { id: 1, name: 'Loading', content: 'Loading...' }
+   // const defaultObj = { winId: 1, content: { id: 1, name: 'Loading', content: 'Loading...' } }
    const [editorValue, setEditorValue] = useState('# Hello!')
-   const [noteData, setNoteData] = useState<IDirData>(defaultObj)
+   const [noteData, setNoteData] = useState<INoteData>()
 
    // Shorthand definitions
    const stickyNoteApi = window.electron.stickyNoteApi
@@ -29,7 +35,8 @@ const StickyNote = ({ isSticky, previewNote }: Props) => {
    }, [])
 
    useEffect(() => {
-      setEditorValue(noteData.content)
+      setWindowId(noteData?.winId)
+      setEditorValue(noteData?.data?.content)
    }, [noteData])
 
    return (

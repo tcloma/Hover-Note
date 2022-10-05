@@ -4,10 +4,10 @@ const fs = require('fs').promises;
 
 // Variable references
 let mainWindow;
-let childWindow;
 let childId;
 let directory;
 let filesCopy = [];
+const childWindows = []
 let foldersCopy = [];
 
 // let homeDir
@@ -77,17 +77,19 @@ ipcMain.on('minimize', () => {
    mainWindow.minimize();
 });
 ipcMain.on('quit', (event, win) => {
-   if (win === 'main') {
-      app.quit();
-   } else {
+   if (win !== undefined) {
       event.preventDefault()
-      childWindow.close()
+      console.log('Called quit on win: ', win)
+      childWindows[win].close()
+      childWindows[win] = null
+   } else {
+      app.quit();
    }
 });
 
 ipcMain.on('new-child-window', (event, noteId) => {
    childId = noteId
-   childWindow = new BrowserWindow({
+   let child = new BrowserWindow({
       width: 400,
       height: 400,
       frame: false,
@@ -99,13 +101,20 @@ ipcMain.on('new-child-window', (event, noteId) => {
          preload: path.join(__dirname, 'preload.js'),
       },
    });
-   childWindow.loadURL(`http://localhost:5173/sticky/${noteId}`);
-   childWindow.setAlwaysOnTop(true, 'screen')
+   childWindows.push(child)
+   console.log('Window arr length: ', childWindows.length)
+   child.loadURL(`http://localhost:5173/sticky/${noteId}`);
+   child.setAlwaysOnTop(true, 'screen')
 });
 
 ipcMain.on('get-child-data', () => {
    const childFile = filesCopy.find(file => file.id === childId)
-   childWindow.webContents.send('return-child-data', childFile)
+   const childDataRef = {
+      winId: childWindows.length - 1,
+      data: childFile
+   }
+   console.log(childDataRef)
+   childWindows[childWindows.length - 1].webContents.send('return-child-data', childDataRef)
 })
 
 const readFileContents = async (file, index) => {
