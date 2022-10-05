@@ -8,12 +8,7 @@ let homeDir
 ipcRenderer.on('home-directory', (event, dir) => {
    homeDir = dir
 })
-ipcRenderer.once('return-files', (event, filesArr) => {
-   files.push(filesArr);
-});
-ipcRenderer.once('return-folders', (event, foldersArr) => {
-   folders.push(foldersArr)
-})
+
 
 contextBridge.exposeInMainWorld('electron', {
    titleBarApi: {
@@ -36,6 +31,12 @@ contextBridge.exposeInMainWorld('electron', {
       processDirectory() {
          if (files.length > 0) return null;
          ipcRenderer.send('get-dir-contents');
+         ipcRenderer.once('return-files', (event, filesArr) => {
+            files.push(filesArr);
+         });
+         ipcRenderer.once('return-folders', (event, foldersArr) => {
+            folders.push(foldersArr)
+         })
       },
       getFiles() {
          if (files.length !== 0) return files;

@@ -1,7 +1,6 @@
 // Hooks and types/interfaces
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { IDirData } from '../interfaces';
 import { useAwaitPoll } from '../functions';
 import { ChakraProvider } from '@chakra-ui/react'
@@ -42,6 +41,9 @@ const App = () => {
       if (initialDirectory) {
          setHasInitDir(true)
          setDirName(initialDirectory)
+         processFiles()
+      } else {
+         console.log('called')
          processFiles()
       }
    }, [dirName])

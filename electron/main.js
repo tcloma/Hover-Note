@@ -12,6 +12,7 @@ let foldersCopy = [];
 
 // let homeDir
 
+// Check if config file exists
 const checkForHomeDir = async () => {
    const checkDir = app.getPath('home')
    const dirContents = await fs.readdir(checkDir, { withFileTypes: true })
@@ -26,7 +27,6 @@ const checkForHomeDir = async () => {
       }
    }
 }
-
 
 // Initial window render
 function createWindow() {
@@ -80,6 +80,7 @@ ipcMain.on('quit', (event, win) => {
    if (win === 'main') {
       app.quit();
    } else {
+      event.preventDefault()
       childWindow.close()
    }
 });

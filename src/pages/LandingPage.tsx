@@ -24,6 +24,9 @@ const LandingPage = ({ dirName, setDirName, hasInitDir }: Props) => {
 
    const handleContinueClick = (): void => {
       setShowDir(!showDir)
+      if (hasInitDir) {
+         navigate('/home')
+      }
    }
 
    const handleBrowseClick = (): void => {

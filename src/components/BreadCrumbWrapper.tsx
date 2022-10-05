@@ -9,9 +9,9 @@ type Props = {
    directory: string,
    noteName?: string,
    setDirName: Dispatch<SetStateAction<string>>,
-   processFiles(): any,
-   name: string,
-   editorValue: string
+   processFiles?: any,
+   name?: string,
+   editorValue?: string
 }
 
 // Make a reference to page to conditionally render stlying and tooblar
