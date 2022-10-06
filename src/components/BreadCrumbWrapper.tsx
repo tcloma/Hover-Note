@@ -14,12 +14,12 @@ type Props = {
    editorValue?: string,
    hasInitDir?: boolean,
    setCurrentNoteId: any,
-   noteId: number
+   noteId: number,
 }
 
 // Make a reference to page to conditionally render stlying and tooblar
 
-const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue, noteId, setCurrentNoteId }: Props) => {
+const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue, noteId, setCurrentNoteId, hasInitDir }: Props) => {
    const splitDirName = noteName ? [...directory.split('\\'), noteName] : directory.split('\\')
    const directoryApi = window.electron.directoryApi
    const navigate = useNavigate()
@@ -67,7 +67,7 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
          <Toolbar
             name={name}
             editorValue={editorValue}
-            isHome={processFiles === undefined}
+            isHome={hasInitDir !== undefined}
             processFiles={processFiles}
             directory={directory}
             setDirName={setDirName}

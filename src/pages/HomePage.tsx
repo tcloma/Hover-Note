@@ -12,10 +12,12 @@ type Props = {
    dirFolders: string[],
    setCurrentNoteId: Dispatch<SetStateAction<number>>,
    setDirName: Dispatch<SetStateAction<string>>,
-   hasInitDir: boolean
+   hasInitDir: boolean,
+   processFiles: any
+
 }
 
-const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName, hasInitDir }: Props) => {
+const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName, hasInitDir, processFiles }: Props) => {
    const splitDirName = hasInitDir ? dirName.split('/') : dirName.toString().split('\\')
    const directoryApi = window.electron.directoryApi
 
@@ -48,7 +50,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
 
    return (
       <>
-         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir} />
+         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir} processFiles={processFiles}/>
          <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
             <Wrap pos='fixed' top='100px' left='1.5em'>
                {[... new Set(dirFolders)].map((folder, index) => {

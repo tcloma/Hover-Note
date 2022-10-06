@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { Box, Button, Container, Divider, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { Box, Button, Code, Container, Divider, Flex, Heading, Spacer } from '@chakra-ui/react';
 
 type Props = {
    id: number,
@@ -33,7 +33,7 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
    return (
       <Container h='20vw' w='20vw' p='1em' pos='relative' border='3px' borderColor='gray.500' borderStyle='solid' borderRadius='lg' overflow='scroll'>
          <Flex pos='sticky' backgroundColor='gray.800' top='-1em' pt='1em' zIndex='overlay' align='center'>
-            <Heading color='purple.500' fontSize='xl'> {title} </Heading>
+            <Code color='whiteAlpha.900' backgroundColor='purple.500' fontSize='xl'> {title}</Code>
             <Spacer />
             <Button variant='ghost' color='whiteAlpha.900'
                _hover={{ color: 'purple.400' }}

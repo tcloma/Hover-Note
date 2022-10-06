@@ -43,6 +43,7 @@
 ## Features / QOL
 - [ ] Renaming files
 - [ ] Color coding notes
+- [ ] Adding badges to categorize notes
 - [ ] Kanban board style 'note board' as the home screen
 - [ ] Resizable and draggable notes in home screen
 - [ ] Remembering note layout when app launches

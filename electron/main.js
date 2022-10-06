@@ -202,3 +202,22 @@ ipcMain.on('delete-file', (event, file) => {
       }
    })
 })
+
+ipcMain.on('create-file', (event, name) => {
+   const newFileDir = path.join(directory, `${name}.md`)
+   fs.stat(newFileDir, (err) => {
+      if (err) {
+         console.log('Writing file!')
+         fs.writeFile(newFileDir, '# Hello File!', (err) => {
+            if (err) {
+               console.log(err)
+            } else {
+               console.log('Success!')
+            }
+         })
+      } else {
+         console.log('file already exists!')
+      }
+
+   })
+})

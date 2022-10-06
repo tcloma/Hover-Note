@@ -33,6 +33,7 @@ const App = () => {
    const initialDirectory = filesApi.checkInitialDirectory()
 
    const processFiles = () => {
+      console.log('caleld process')
       filesApi.processDirectory()
       useAwaitPoll(filesApi.getFiles, setDirFiles)
       useAwaitPoll(filesApi.getFolders, setDirFolders)
@@ -88,6 +89,7 @@ const App = () => {
                         setDirName={setDirName}
                         setCurrentNoteId={setCurrentNoteId}
                         hasInitDir={hasInitDir}
+                        processFiles={processFiles}
                      />}
                   />
                   <Route path='/note/:id' element={

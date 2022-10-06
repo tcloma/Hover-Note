@@ -4,7 +4,7 @@ import { IDirData } from '../interfaces'
 // Libraries
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import MarkdownEditor from '../components/MarkdownEditor';
-import { Box, Button, Divider, Flex } from '@chakra-ui/react';
+import { Box, Divider, Flex } from '@chakra-ui/react';
 import BreadCrumbWrapper from '../components/BreadCrumbWrapper';
 
 type Props = {
@@ -42,7 +42,7 @@ const NotePage = ({ noteData = { id: 1, name: 'test', content: 'test' }, dirName
                   onChange={setEditorValue}
                />
             </Box>
-            <Divider orientation='vertical' h='50vh' color='teal.100' />
+            <Divider orientation='vertical' h='container.md' />
             <Box w='45%' pl='1em' pt='1em'>
                <MarkdownPreview
                   source={editorValue}
@@ -51,11 +51,6 @@ const NotePage = ({ noteData = { id: 1, name: 'test', content: 'test' }, dirName
                      height: '100%',
                      fontSize: '16px'
                   }}
-                  // rehypeRewrite={(node, index, parent) => {
-                  //    if (node.tagName === "a" && parent && /^h(1|2|3|4|5|6)/.test(parent.tagName)) {
-                  //       parent.children = [parent.children[1]];
-                  //    }
-                  // }}
                />
             </Box>
          </Flex>

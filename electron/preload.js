@@ -55,6 +55,9 @@ contextBridge.exposeInMainWorld('electron', {
       },
       deleteFile(file) {
          ipcRenderer.send('delete-file', file)
+      },
+      createFile(name) {
+         ipcRenderer.send('create-file', name)
       }
 
    },

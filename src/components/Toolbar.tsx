@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, HStack, useToast, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter } from '@chakra-ui/react'
+import React, { useRef, useState } from 'react'
+import { Button, HStack, useToast, useDisclosure, useDisclosure as useMe, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSave, faCopy, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -17,16 +17,22 @@ type Props = {
 }
 
 const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirName, setCurrentNoteId, noteId }: Props) => {
+   const [formValue, setFormValue] = useState('')
+
    const splitDirName = name ? [...directory.split('\\'), name] : directory.split('\\')
 
    const toast = useToast()
    const navigate = useNavigate()
    const directoryApi = window.electron.directoryApi
    const { isOpen, onOpen, onClose } = useDisclosure()
+   const { isOpen: openMe, onOpen: imOpen, onClose: closeMe } = useMe()
 
 
    const filesApi = window.electron.filesApi
    const windowAPi = window.electron.windowApi
+
+   const initialRef = React.useRef(null)
+   const finalRef = React.useRef(null)
 
    const handleDeleteClick = () => {
       const breadCrumbBreakPoint = splitDirName.slice(0, splitDirName.indexOf(name)).join('\\')
@@ -37,8 +43,20 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
       navigate('/home')
    }
 
+   const handleNewFileClick = () => {
+      console.log(formValue)
+      filesApi.createFile(formValue)
+      processFiles()
+      closeMe()
+      toast({
+         position: 'bottom-right',
+         status: 'success',
+         title: 'File created!',
+         isClosable: true
+      })
+   }
+
    const handlePopupClick = () => {
-      // setCurrentNoteId(noteId)
       windowAPi.newWindow(noteId)
    }
 
@@ -66,6 +84,49 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                </ModalFooter>
             </ModalContent>
          </Modal>
+
+         <Modal
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}
+            isOpen={openMe}
+            onClose={closeMe}
+            isCentered
+         >
+            <ModalOverlay />
+            <ModalContent bgColor='gray.800' color='whiteAlpha.900'>
+               <ModalHeader>Create a new file</ModalHeader>
+               <ModalCloseButton />
+               <ModalBody pb={6}>
+                  <FormControl>
+                     <Input
+                        value={formValue}
+                        onChange={(e) => setFormValue(e.target.value)}
+                        variant='flushed'
+                        ref={initialRef}
+                        placeholder='File name'
+                     />
+                  </FormControl>
+               </ModalBody>
+
+               <ModalFooter>
+                  <Button
+                     onClick={() => {
+                        handleNewFileClick()
+                     }}
+                     colorScheme='purple' mr={3}>
+                     Save
+                  </Button>
+                  <Button
+                     variant='ghost'
+                     _hover={{
+                        'color': 'teal'
+                     }}
+                     onClick={closeMe}>
+                     Cancel
+                  </Button>
+               </ModalFooter>
+            </ModalContent>
+         </Modal>
          <HStack
             top='50px' right='0'
             pos='fixed' zIndex='overlay'
@@ -76,6 +137,10 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                   _hover={{
                      'backgroundColor': 'teal.500'
                   }}
+                  onClick={() => {
+                     imOpen()
+                  }}
+
                >
                   <FontAwesomeIcon icon={faPlus} />
                </Button>

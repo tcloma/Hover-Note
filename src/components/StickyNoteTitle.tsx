@@ -1,8 +1,8 @@
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faXmark, faPencil, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faPencil, faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Dispatch, SetStateAction } from 'react';
-import { Flex, Spacer, HStack, Button, Heading, useToast } from "@chakra-ui/react";
+import { Flex, Spacer, HStack, Button, Heading, useToast, Box } from "@chakra-ui/react";
 
 type Props = {
    previewNote: boolean,
@@ -37,13 +37,28 @@ const StickyNoteTitle = ({ previewNote, setPreviewNote, windowId, windowName, wi
             <Button
                onClick={() => {
                   setPreviewNote(!previewNote)
-                  filesApi.writeFile(windowName, windowData)
-                  toast({
-                     position: 'bottom-right',
-                     status: 'success',
-                     title: 'File saved.',
-                     isClosable: true
-                  })
+                  if (!previewNote) {
+                     filesApi.writeFile(windowName, windowData)
+                     toast({
+                        position: 'bottom-right',
+                        status: 'success',
+                        isClosable: true,
+                        render: () => (
+                           <Box
+                              backgroundColor='green.300'
+                              color='whiteAlpha.900'
+                              p='.5em'
+                              fontSize='lg'
+                              w='10vw'
+                              textAlign='center'
+                              borderRadius='lg'
+                              ml='70vw'
+                           >
+                              <FontAwesomeIcon icon={faCheckCircle} />
+                           </Box>
+                        )
+                     })
+                  }
                }}
                _hover={{ bg: 'gray.500' }}
                variant='ghost'
