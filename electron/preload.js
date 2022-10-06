@@ -60,6 +60,12 @@ contextBridge.exposeInMainWorld('electron', {
       },
       createFile(name) {
          ipcRenderer.send('create-file', name)
+      },
+      renameFile(name, newName) {
+         ipcRenderer.send('rename-file', {
+            currName: name,
+            newName: newName
+         })
       }
 
    },

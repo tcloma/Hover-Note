@@ -220,3 +220,16 @@ ipcMain.on('create-file', (event, name) => {
 
    })
 })
+
+ipcMain.on('rename-file', (event, args) => {
+   const { currName, newName } = args
+   console.log(currName)
+   console.log(newName)
+   fs.rename(path.join(directory, currName), path.join(directory, `${newName}.md`), (err) => {
+      if (err) {
+         console.log(err)
+      } else {
+         console.log('File renamed')
+      }
+   })
+})

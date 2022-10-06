@@ -59,8 +59,8 @@ const App = () => {
 
    // Files received from electron
    console.log('Directory Name: ', dirName)
-   console.log('Directory Files: ', dirFiles)
-   console.log('Directory Folders: ', dirFolders)
+   console.log('Directory Files: ', dirFiles[0])
+   console.log('Directory Folders: ', dirFolders[0])
 
    return (
       <BrowserRouter>

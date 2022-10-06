@@ -25,19 +25,16 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
    const navigate = useNavigate()
    const toast = useToast()
 
-   console.log(dirFiles)
-
-
    const splitDirName = name ? [...directory.split('\\'), name] : directory.split('\\')
    const { isOpen, onOpen, onClose } = useDisclosure()
    const { isOpen: openMe, onOpen: imOpen, onClose: closeMe } = useMe()
-
 
    const directoryApi = window.electron.directoryApi
    const filesApi = window.electron.filesApi
    const windowAPi = window.electron.windowApi
 
    const handleDeleteClick = () => {
+      filesApi.deleteFile(name)
       const breadCrumbBreakPoint = splitDirName.slice(0, splitDirName.indexOf(name)).join('\\')
       console.log('New dir: ', breadCrumbBreakPoint)
       directoryApi.setNewDirectory(breadCrumbBreakPoint)
@@ -56,7 +53,7 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
       filesApi.createFile(formValue)
       setDirFiles([[...dirFiles, {
          id: dirFiles.length + 1,
-         name: formValue,
+         name: `${formValue}.md`,
          content: '# Hello File!'
       }]])
       closeMe()
@@ -64,6 +61,16 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
          position: 'bottom-right',
          status: 'success',
          title: 'File created!',
+         isClosable: true
+      })
+   }
+
+   const handleWriteFile = () => {
+      filesApi.writeFile(name, editorValue)
+      toast({
+         position: 'bottom-right',
+         status: 'success',
+         title: 'File saved.',
          isClosable: true
       })
    }
@@ -85,24 +92,21 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                </ModalBody>
 
                <ModalFooter>
-                  <Button colorScheme='red' mr={3} onClick={() => {
-                     filesApi.deleteFile(name)
-                     handleDeleteClick()
-                  }}>
+                  <Button onClick={handleDeleteClick} colorScheme='red' mr={3} >
                      Delete
                   </Button>
-                  <Button variant='ghost' onClick={() => {
-                     onClose()
-                  }}> Cancel </Button>
+                  <Button onClick={onClose} variant='ghost' >
+                     Cancel
+                  </Button>
                </ModalFooter>
             </ModalContent>
          </Modal>
          {/* New file modal */}
          <Modal
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}
             isOpen={openMe}
             onClose={closeMe}
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}
             isCentered
          >
             <ModalOverlay />
@@ -122,19 +126,10 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                </ModalBody>
 
                <ModalFooter>
-                  <Button
-                     onClick={() => {
-                        handleNewFileClick()
-                     }}
-                     colorScheme='purple' mr={3}>
+                  <Button onClick={handleNewFileClick} colorScheme='purple' mr={3}>
                      Save
                   </Button>
-                  <Button
-                     variant='ghost'
-                     _hover={{
-                        'color': 'teal'
-                     }}
-                     onClick={closeMe}>
+                  <Button onClick={closeMe} _hover={{ 'color': 'teal' }} variant='ghost'>
                      Cancel
                   </Button>
                </ModalFooter>
@@ -147,74 +142,22 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
          >
             {isHome ?
                <>
-                  <Button variant='ghost'
-                     _hover={{
-                        'backgroundColor': 'teal.500'
-                     }}
-                     onClick={() => {
-                        imOpen()
-                     }}
-
-                  >
+                  <Button onClick={imOpen} _hover={{ 'backgroundColor': 'teal.500' }} variant='ghost'>
                      <FontAwesomeIcon icon={faPlus} />
                   </Button>
-                  <Button variant='ghost'
-                     _hover={{
-                        'backgroundColor': 'teal.500',
-                        'color': 'yellow.300'
-                     }}
-                     onClick={() => {
-                        imOpen()
-                     }}
-
-                  >
+                  <Button onClick={imOpen} _hover={{ 'backgroundColor': 'teal.500', 'color': 'yellow.300' }} variant='ghost'>
                      <FontAwesomeIcon icon={faStar} />
                   </Button>
                </>
                :
                <>
-
-                  <Button
-                     variant='ghost'
-                     title='hover'
-                     _hover={{
-                        'backgroundColor': 'teal.500'
-                     }}
-                     onClick={() => {
-                        handlePopupClick()
-                     }}
-                  >
+                  <Button onClick={handlePopupClick} _hover={{ 'backgroundColor': 'teal.500' }} variant='ghost' title='hover'>
                      <FontAwesomeIcon icon={faPaperPlane} />
                   </Button>
-                  <Button
-                     variant='ghost'
-                     title='save'
-                     _hover={{
-                        'backgroundColor': 'teal.500'
-                     }}
-                     onClick={() => {
-                        filesApi.writeFile(name, editorValue)
-                        toast({
-                           position: 'bottom-right',
-                           status: 'success',
-                           title: 'File saved.',
-                           isClosable: true
-                        })
-                        // console.log(name, editorValue)
-                     }}
-                  >
+                  <Button onClick={handleWriteFile} _hover={{ 'backgroundColor': 'teal.500' }} variant='ghost' title='save' >
                      <FontAwesomeIcon icon={faSave} />
                   </Button>
-                  <Button
-                     variant='ghost'
-                     title='delete'
-                     _hover={{
-                        'backgroundColor': 'red.500'
-                     }}
-                     onClick={() => {
-                        onOpen()
-                     }}
-                  >
+                  <Button onClick={onOpen} _hover={{ 'backgroundColor': 'red.500' }} variant='ghost' title='delete'>
                      <FontAwesomeIcon icon={faTrash} />
                   </Button>
                </>
