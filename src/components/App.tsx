@@ -19,7 +19,7 @@ const App = () => {
    const [dirFolders, setDirFolders] = useState<Array<string[]>>([])
    const [currentNoteId, setCurrentNoteId] = useState<number>(0)
    const [hasInitDir, setHasInitDir] = useState<boolean>(false)
-   const [initialRender, setInitialRender] = useState<boolean>(false)
+   const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
    const [windowId, setWindowId] = useState()
@@ -38,17 +38,21 @@ const App = () => {
 
    // Fetching data from Electron
    useEffect(() => {
-      if (initialRender) { setInitialRender(false); return }
-      if (isStickyNote === true) return;
-      if (initialDirectory) {
-         setHasInitDir(true)
-         setDirName(initialDirectory)
-         processFiles()
+      if (initialRender) {
+         setInitialRender(false)
       } else {
          console.log('called')
          processFiles()
       }
    }, [dirName])
+
+   useEffect(() => {
+      if (initialDirectory) {
+         setHasInitDir(true)
+         setDirName(initialDirectory)
+         processFiles()
+      }
+   }, [])
 
    // Files received from electron
    console.log('Directory Name: ', dirName)

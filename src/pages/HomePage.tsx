@@ -2,7 +2,7 @@
 import React, { SetStateAction, Dispatch } from "react"
 import { IDirData } from '../interfaces'
 // Libraries and components
-import { Flex, Button, Text, Wrap, WrapItem, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading } from "@chakra-ui/react"
+import { Flex, Button, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import BreadCrumbWrapper from "../components/BreadCrumbWrapper"
 import Note from "../components/Note"
 
@@ -16,7 +16,6 @@ type Props = {
 }
 
 const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName, hasInitDir }: Props) => {
-   console.log(hasInitDir)
    const splitDirName = hasInitDir ? dirName.split('/') : dirName.toString().split('\\')
    const directoryApi = window.electron.directoryApi
 
@@ -26,10 +25,12 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
       setDirName(newDirName)
    }
 
+   const uniqueObjArray = [...new Map(dirFiles.map((item) => [item["name"], item])).values()];
+   
    const NoteCards = () => {
       return (
          <>
-            {dirFiles.map((item, index) => {
+            {uniqueObjArray.map((item, index) => {
                return (
                   <WrapItem key={item.id}>
                      <Note
@@ -47,10 +48,10 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
 
    return (
       <>
-         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir}/>
+         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir} />
          <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
             <Wrap pos='fixed' top='100px' left='1.5em'>
-               {dirFolders.map((folder, index) => {
+               {[... new Set(dirFolders)].map((folder, index) => {
                   return (
                      <Button variant='outline' color='whiteAlpha.900' key={index + 1}
                         onClick={() => handleFolderButtonClick(folder)}

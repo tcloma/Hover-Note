@@ -133,7 +133,7 @@ ipcMain.on('open-dialog', () => {
          if (result.canceled) return null;
          mainWindow.webContents.send('return-path', result.filePaths.toString());
          directory = result.filePaths.toString();
-         fs.writeFile(path.join(app.getPath('home'), '.hoverconfig.txt'), d, (err) => {
+         fs.writeFile(path.join(app.getPath('home'), '.hoverconfig.txt'), directory, (err) => {
             if (err) {
                console.log(err)
             } else {
