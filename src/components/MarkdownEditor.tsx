@@ -3,6 +3,7 @@ import CodeMirror from '@uiw/react-codemirror'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 import { langs } from '@uiw/codemirror-extensions-langs'
+import { EditorView } from '@codemirror/view';
 
 type Props = {
    value: any,
@@ -36,12 +37,13 @@ const myTheme = createTheme({
       { tag: t.angleBracket, color: '#5c6166' },
       { tag: t.tagName, color: '#5c6166' },
       { tag: t.attributeName, color: '#5c6166' },
-      { tag: t.heading1, color: 'red' },
-      { tag: t.heading2, color: 'yellow' },
-      { tag: t.heading3, color: 'blue' },
-      { tag: t.heading4, color: 'green' },
-      { tag: t.heading5, color: 'purple' },
-      { tag: t.heading6, color: 'teal' }
+      { tag: t.heading1, color: '#e06c75' },
+      { tag: t.heading2, color: '#45f1c2' },
+      { tag: t.heading3, color: '#0ca0d8' },
+      { tag: t.heading4, color: '#e5c07b' },
+      { tag: t.heading5, color: '#98c379' },
+      { tag: t.heading6, color: '#4f9ea9' },
+      // { tag: t.list, color: '#d3d8de' },
    ],
 });
 
@@ -58,7 +60,7 @@ const MarkdownEditor = ({ value, onChange }: Props) => {
          height='100%'
          width='100%'
          theme={myTheme}
-         extensions={[langs.markdown()]}
+         extensions={[langs.markdown(), EditorView.lineWrapping]}
          basicSetup={{
             foldGutter: false,
             dropCursor: false,

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading } from "@chakra-ui/react"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -12,13 +12,15 @@ type Props = {
    processFiles?: any,
    name?: string,
    editorValue?: string,
-   hasInitDir?: boolean
+   hasInitDir?: boolean,
+   setCurrentNoteId: any,
+   noteId: number
 }
 
 // Make a reference to page to conditionally render stlying and tooblar
 
-const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue }: Props) => {
-   const splitDirName = noteName ? [...directory.toString().split('\\'), noteName] : directory.toString().split('\\')
+const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue, noteId, setCurrentNoteId }: Props) => {
+   const splitDirName = noteName ? [...directory.split('\\'), noteName] : directory.split('\\')
    const directoryApi = window.electron.directoryApi
    const navigate = useNavigate()
 
@@ -31,7 +33,6 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
 
    return (
       <>
-
          <Breadcrumb
             spacing='8px' w='100%' p='10px'
             bgColor='gray.800' color='whiteAlpha.900'
@@ -50,7 +51,9 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
                      }}
                         color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
                         onClick={() => {
-                           handleBreadcrumbClick(name)
+                           if (!lastItem) {
+                              handleBreadcrumbClick(name)
+                           }
                            if (lastDir) {
                               processFiles()
                            }
@@ -61,7 +64,16 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
                )
             })}
          </Breadcrumb>
-         <Toolbar name={name} editorValue={editorValue} isHome={processFiles === undefined}/>
+         <Toolbar
+            name={name}
+            editorValue={editorValue}
+            isHome={processFiles === undefined}
+            processFiles={processFiles}
+            directory={directory}
+            setDirName={setDirName}
+            setCurrentNoteId={setCurrentNoteId}
+            noteId={noteId}
+         />
       </>
    )
 }

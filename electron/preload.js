@@ -52,6 +52,9 @@ contextBridge.exposeInMainWorld('electron', {
       },
       checkInitialDirectory() {
          return homeDir
+      },
+      deleteFile(file) {
+         ipcRenderer.send('delete-file', file)
       }
 
    },

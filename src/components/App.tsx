@@ -22,7 +22,9 @@ const App = () => {
    const [initialRender, setInitialRender] = useState<boolean>(true)
    const [isStickyNote, setIsStickyNote] = useState<boolean>(false)
    const [previewNote, setPreviewNote] = useState<boolean>(true)
-   const [windowId, setWindowId] = useState()
+   const [windowId, setWindowId] = useState(0)
+   const [windowName, setWindowName] = useState('')
+   const [windowData, setWindowData] = useState('')
    // Create state for value of sticky note to be passed down to sticky note title
 
    // Shorthand definitions
@@ -67,6 +69,8 @@ const App = () => {
                previewNote={previewNote}
                setPreviewNote={setPreviewNote}
                windowId={windowId}
+               windowName={windowName}
+               windowData={windowData}
             >
                <Routes>
                   <Route path='/' element={
@@ -92,6 +96,7 @@ const App = () => {
                         noteData={currentNote}
                         setDirName={setDirName}
                         processFiles={processFiles}
+                        setCurrentNoteId={setCurrentNoteId}
                      />}
                   />
                   <Route path='/sticky/:id' element={
@@ -99,6 +104,8 @@ const App = () => {
                         previewNote={previewNote}
                         isSticky={setIsStickyNote}
                         setWindowId={setWindowId}
+                        setWindowName={setWindowName}
+                        setWindowData={setWindowData}
                      />}
                   />
                </Routes>

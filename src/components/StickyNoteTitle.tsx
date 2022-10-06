@@ -2,16 +2,23 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faXmark, faPencil, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Dispatch, SetStateAction } from 'react';
-import { Flex, Spacer, Box, HStack, Button } from "@chakra-ui/react";
+import { Flex, Spacer, HStack, Button, Heading, useToast } from "@chakra-ui/react";
 
 type Props = {
    previewNote: boolean,
    setPreviewNote: Dispatch<SetStateAction<boolean>>,
-   windowId: number | undefined
+   windowId: number | undefined,
+   windowName: string,
+   windowData: string,
 }
 
-const StickyNoteTitle = ({ previewNote, setPreviewNote, windowId }: Props) => {
+const StickyNoteTitle = ({ previewNote, setPreviewNote, windowId, windowName, windowData }: Props) => {
    const titleBar = window.electron.titleBarApi
+   const filesApi = window.electron.filesApi
+
+   const toast = useToast()
+
+   console.log(windowData)
 
    return (
       <Flex
@@ -24,13 +31,20 @@ const StickyNoteTitle = ({ previewNote, setPreviewNote, windowId }: Props) => {
             'WebkitAppRegion': 'drag',
          }}
       >
-         <Box fontSize='xl' color='teal.400'>
-            <FontAwesomeIcon icon={faPaperPlane} /> {windowId}
-         </Box>
+         <Heading fontSize='lg' color='teal.400'> {windowName}</Heading>
          <Spacer />
          <HStack>
             <Button
-               onClick={() => setPreviewNote(!previewNote)}
+               onClick={() => {
+                  setPreviewNote(!previewNote)
+                  filesApi.writeFile(windowName, windowData)
+                  toast({
+                     position: 'bottom-right',
+                     status: 'success',
+                     title: 'File saved.',
+                     isClosable: true
+                  })
+               }}
                _hover={{ bg: 'gray.500' }}
                variant='ghost'
                title={previewNote ? 'Edit' : 'Confirm'}

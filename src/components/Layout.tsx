@@ -7,15 +7,23 @@ type Props = {
    stickyNote: boolean,
    previewNote: boolean,
    setPreviewNote: Dispatch<SetStateAction<boolean>>,
-   windowId: number | undefined
+   windowId: number | undefined,
+   windowName: string,
+   windowData: string
 }
 
 
-const Layout = ({ children, stickyNote, previewNote, setPreviewNote, windowId }: Props) => {
+const Layout = ({ children, stickyNote, previewNote, setPreviewNote, windowId, windowName, windowData }: Props) => {
    return (
       <>
          {stickyNote ?
-            <StickyNoteTitle previewNote={previewNote} setPreviewNote={setPreviewNote} windowId={windowId} />
+            <StickyNoteTitle
+               previewNote={previewNote}
+               setPreviewNote={setPreviewNote}
+               windowId={windowId}
+               windowName={windowName}
+               windowData={windowData}
+            />
             :
             <Titlebar />
          }

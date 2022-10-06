@@ -26,7 +26,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
    }
 
    const uniqueObjArray = [...new Map(dirFiles.map((item) => [item["name"], item])).values()];
-   
+
    const NoteCards = () => {
       return (
          <>
@@ -62,7 +62,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
                })}
             </Wrap>
             {dirFiles.length === 0 ?
-               <Text fontSize='5xl' color='whiteAlpha.900'> Empty Directory </Text>
+               <Text fontSize='5xl' color='whiteAlpha.900'> This directory has no supported files </Text>
                :
                <Wrap p='1em' w='95%' spacing='1em' justify='center'>
                   <NoteCards />

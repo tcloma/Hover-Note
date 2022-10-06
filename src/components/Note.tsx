@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { Box, Button, Container } from '@chakra-ui/react';
+import { Box, Button, Container, Divider, Flex, Heading, Spacer } from '@chakra-ui/react';
 
 type Props = {
    id: number,
@@ -31,23 +31,35 @@ const Note = ({ title, content, id, setCurrentNoteId }: Props) => {
    }
 
    return (
-      <Container h='20vw' w='20vw' p='1em' pt='2.5em' pos='relative' border='3px' borderColor='gray.500' borderStyle='solid' borderRadius='lg' overflow='scroll'>
-         <Button pos='absolute' variant='ghost' color='whiteAlpha.900' right='5' top='0'
-            _hover={{ color: 'purple.400' }}
-            onClick={() => stickyWindowPopup()}>
-            <FontAwesomeIcon icon={faPlus} />
-         </Button>
-         <Button pos='absolute' variant='ghost' color='whiteAlpha.900' right='0' top='0'
-            _hover={{ color: 'purple.400' }}
-            onClick={() => console.log('clicked')}>
-            <FontAwesomeIcon icon={faEllipsisVertical} />
-         </Button>
-         <Box onClick={() => notePageRoute()}>
+      <Container h='20vw' w='20vw' p='1em' pos='relative' border='3px' borderColor='gray.500' borderStyle='solid' borderRadius='lg' overflow='scroll'>
+         <Flex pos='sticky' backgroundColor='gray.800' top='-1em' pt='1em' zIndex='overlay' align='center'>
+            <Heading color='purple.500' fontSize='xl'> {title} </Heading>
+            <Spacer />
+            <Button variant='ghost' color='whiteAlpha.900'
+               _hover={{ color: 'purple.400' }}
+               onClick={() => stickyWindowPopup()}>
+               <FontAwesomeIcon icon={faPlus} />
+            </Button>
+            <Button variant='ghost' color='whiteAlpha.900'
+               _hover={{ color: 'purple.400' }}
+               onClick={() => console.log('clicked')}>
+               <FontAwesomeIcon icon={faEllipsisVertical} />
+            </Button>
+         </Flex>
+         <Box pos='sticky' top='2.5em' zIndex='overlay'>
+            <Divider />
+         </Box>
+         <Box pt='1.5em' onClick={() => notePageRoute()}>
             <MarkdownPreview
                source={content}
                style={{
                   backgroundColor: 'transparent',
-                  height: '100vh'
+                  height: '100%'
+               }}
+               rehypeRewrite={(node, index, parent) => {
+                  if (node.tagName === "a" && parent && /^h(1|2|3|4|5|6)/.test(parent.tagName)) {
+                     parent.children = [parent.children[1]];
+                  }
                }}
             />
          </Box>

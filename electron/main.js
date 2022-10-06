@@ -192,3 +192,13 @@ ipcMain.on('write-file', (event, args) => {
       }
    })
 })
+
+ipcMain.on('delete-file', (event, file) => {
+   fs.unlink(path.join(directory, file), (err) => {
+      if (err) {
+         console.log(err)
+      } else {
+         console.log('success!')
+      }
+   })
+})
