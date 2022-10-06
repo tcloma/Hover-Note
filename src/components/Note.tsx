@@ -36,7 +36,7 @@ const Note = ({ title, content, id, setCurrentNoteId, setDirFiles, dirFiles }: P
 
    return (
       <Container h='20vw' w='20vw' p='1em' pos='relative' border='3px' borderColor='gray.500' borderStyle='solid' borderRadius='lg' overflow='scroll'>
-         <Flex pos='sticky' backgroundColor='gray.800' top='-1em' pt='1em' zIndex='overlay' align='center'>
+         <Flex pos='sticky' backgroundColor='gray.800' top='-1em' pt='1em' pb='.1em' zIndex='docked' align='center'>
             <Code maxW='65%' color='whiteAlpha.900' backgroundColor='purple.500' fontSize='lg' noOfLines={1}
                _hover={{
                   'noOfLines': 'max'

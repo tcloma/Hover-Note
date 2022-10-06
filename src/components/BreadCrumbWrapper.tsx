@@ -39,6 +39,7 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
             spacing='8px' w='100%' p='10px'
             bgColor='gray.800' color='whiteAlpha.900'
             zIndex='overlay' pos='fixed'
+            boxShadow={hasInitDir? 'base' : 'md'}
             top='50px' left='1em'
             separator={<FontAwesomeIcon icon={faChevronRight} />}
          >

@@ -55,7 +55,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName,
       <>
          <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir} processFiles={processFiles} setDirFiles={setDirFiles} dirFiles={dirFiles} />
          <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
-            <Wrap pos='fixed' top='100px' left='1.5em'>
+            <Wrap pos='fixed' top='90px' pl='1.5em' zIndex='overlay' pb='2' w='100%' bg='gray.800' boxShadow='md'>
                {[... new Set(dirFolders)].map((folder, index) => {
                   return (
                      <Button variant='outline' color='whiteAlpha.900' key={index + 1}
