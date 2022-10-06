@@ -11,7 +11,8 @@ type Props = {
    setDirName: Dispatch<SetStateAction<string>>,
    processFiles?: any,
    name?: string,
-   editorValue?: string
+   editorValue?: string,
+   hasInitDir?: boolean
 }
 
 // Make a reference to page to conditionally render stlying and tooblar

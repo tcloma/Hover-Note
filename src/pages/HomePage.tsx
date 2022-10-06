@@ -12,10 +12,12 @@ type Props = {
    dirFolders: string[],
    setCurrentNoteId: Dispatch<SetStateAction<number>>,
    setDirName: Dispatch<SetStateAction<string>>,
+   hasInitDir: boolean
 }
 
-const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName }: Props) => {
-   const splitDirName = dirName.toString().split('\\')
+const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName, hasInitDir }: Props) => {
+   console.log(hasInitDir)
+   const splitDirName = hasInitDir ? dirName.split('/') : dirName.toString().split('\\')
    const directoryApi = window.electron.directoryApi
 
    const handleFolderButtonClick = (folder: string) => {
@@ -45,7 +47,7 @@ const HomePage = ({ dirName, dirFiles, dirFolders, setCurrentNoteId, setDirName 
 
    return (
       <>
-         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} />
+         <BreadCrumbWrapper directory={dirName} setDirName={setDirName} hasInitDir={hasInitDir}/>
          <Flex minH='100vh' h='100%' justify='center' align='center' flexFlow='column' bg='gray.800' pt='150px'>
             <Wrap pos='fixed' top='100px' left='1.5em'>
                {dirFolders.map((folder, index) => {

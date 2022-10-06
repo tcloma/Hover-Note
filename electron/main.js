@@ -136,6 +136,13 @@ ipcMain.on('open-dialog', () => {
          mainWindow.webContents.send('return-path', result.filePaths);
          const convertedPath = result.filePaths.toString().split(path.sep).join(path.posix.sep);
          directory = convertedPath;
+         fs.writeFile(`${app.getPath('home')}/.hoverconfig.txt`, convertedPath, (err) => {
+            if (err) {
+               console.log(err)
+            } else {
+               console.log('success')
+            }
+         })
          console.log('Directory: ', directory);
       });
 });

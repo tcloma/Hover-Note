@@ -51,6 +51,7 @@ const App = () => {
    }, [dirName])
 
    // Files received from electron
+   console.log('Directory Name: ', dirName)
    console.log('Directory Files: ', dirFiles)
    console.log('Directory Folders: ', dirFolders)
 
@@ -78,6 +79,7 @@ const App = () => {
                         dirFolders={dirFolders[0]}
                         setDirName={setDirName}
                         setCurrentNoteId={setCurrentNoteId}
+                        hasInitDir={hasInitDir}
                      />}
                   />
                   <Route path='/note/:id' element={
