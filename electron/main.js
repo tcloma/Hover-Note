@@ -10,8 +10,6 @@ let filesCopy = [];
 const childWindows = []
 let foldersCopy = [];
 
-// let homeDir
-
 // Check if config file exists
 const checkForHomeDir = async () => {
    const checkDir = app.getPath('home')
@@ -19,7 +17,7 @@ const checkForHomeDir = async () => {
    for (const item of dirContents) {
       if (item.isFile()) {
          if (item.name === '.hoverconfig.txt') {
-            const configFileContents = await fs.readFile(`${checkDir}\\${item.name}`, 'utf-8')
+            const configFileContents = await fs.readFile(path.join(checkDir, item.name), 'utf-8')
             directory = configFileContents
             console.log(directory)
             mainWindow.webContents.send('home-directory', directory)
@@ -118,7 +116,7 @@ ipcMain.on('get-child-data', () => {
 })
 
 const readFileContents = async (file, index) => {
-   const fileContent = await fs.readFile(`${directory}/${file}`, 'utf-8');
+   const fileContent = await fs.readFile(path.join(directory, file), 'utf-8');
    const fileObject = {
       id: index,
       name: file,
@@ -133,10 +131,9 @@ ipcMain.on('open-dialog', () => {
    })
       .then((result) => {
          if (result.canceled) return null;
-         mainWindow.webContents.send('return-path', result.filePaths);
-         const convertedPath = result.filePaths.toString().split(path.sep).join(path.posix.sep);
-         directory = convertedPath;
-         fs.writeFile(`${app.getPath('home')}/.hoverconfig.txt`, convertedPath, (err) => {
+         mainWindow.webContents.send('return-path', result.filePaths.toString());
+         directory = result.filePaths.toString();
+         fs.writeFile(path.join(app.getPath('home'), '.hoverconfig.txt'), d, (err) => {
             if (err) {
                console.log(err)
             } else {
@@ -180,14 +177,14 @@ const getDirContents = async () => {
 ipcMain.on('get-dir-contents', getDirContents);
 
 ipcMain.on('set-dir', (event, dir) => {
-   directory = dir.split('\\').join('/')
+   directory = dir
    filesCopy.length = 0
    foldersCopy.length = 0
 })
 
 ipcMain.on('write-file', (event, args) => {
    const { file, content } = args
-   fs.writeFile(`${directory}/${file}`, content, (err) => {
+   fs.writeFile(path.join(directory, file), content, (err) => {
       if (err) {
          console.log(err)
       } else {
