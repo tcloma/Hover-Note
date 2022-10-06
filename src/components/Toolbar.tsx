@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Button, HStack, useToast, useDisclosure, useDisclosure as useMe, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSave, faCopy, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faCopy, faTrash, faPlus, faPaperPlane, faStar } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -18,21 +18,20 @@ type Props = {
 
 const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirName, setCurrentNoteId, noteId }: Props) => {
    const [formValue, setFormValue] = useState('')
+   const initialRef = React.useRef(null)
+   const finalRef = React.useRef(null)
+   const navigate = useNavigate()
+   const toast = useToast()
+
 
    const splitDirName = name ? [...directory.split('\\'), name] : directory.split('\\')
-
-   const toast = useToast()
-   const navigate = useNavigate()
-   const directoryApi = window.electron.directoryApi
    const { isOpen, onOpen, onClose } = useDisclosure()
    const { isOpen: openMe, onOpen: imOpen, onClose: closeMe } = useMe()
 
 
+   const directoryApi = window.electron.directoryApi
    const filesApi = window.electron.filesApi
    const windowAPi = window.electron.windowApi
-
-   const initialRef = React.useRef(null)
-   const finalRef = React.useRef(null)
 
    const handleDeleteClick = () => {
       const breadCrumbBreakPoint = splitDirName.slice(0, splitDirName.indexOf(name)).join('\\')
@@ -62,6 +61,7 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
 
    return (
       <>
+         {/* Delete Modal */}
          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent bgColor='gray.800' color='whiteAlpha.900'>
@@ -84,7 +84,7 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                </ModalFooter>
             </ModalContent>
          </Modal>
-
+         {/* New file modal */}
          <Modal
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
@@ -133,19 +133,46 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
             color='whiteAlpha.900'
          >
             {isHome ?
-               <Button variant='ghost'
-                  _hover={{
-                     'backgroundColor': 'teal.500'
-                  }}
-                  onClick={() => {
-                     imOpen()
-                  }}
+               <>
+                  <Button variant='ghost'
+                     _hover={{
+                        'backgroundColor': 'teal.500'
+                     }}
+                     onClick={() => {
+                        imOpen()
+                     }}
 
-               >
-                  <FontAwesomeIcon icon={faPlus} />
-               </Button>
+                  >
+                     <FontAwesomeIcon icon={faPlus} />
+                  </Button>
+                  <Button variant='ghost'
+                     _hover={{
+                        'backgroundColor': 'teal.500',
+                        'color': 'yellow.300'
+                     }}
+                     onClick={() => {
+                        imOpen()
+                     }}
+
+                  >
+                     <FontAwesomeIcon icon={faStar} />
+                  </Button>
+               </>
                :
                <>
+
+                  <Button
+                     variant='ghost'
+                     title='hover'
+                     _hover={{
+                        'backgroundColor': 'teal.500'
+                     }}
+                     onClick={() => {
+                        handlePopupClick()
+                     }}
+                  >
+                     <FontAwesomeIcon icon={faPaperPlane} />
+                  </Button>
                   <Button
                      variant='ghost'
                      title='save'
@@ -164,18 +191,6 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
                      }}
                   >
                      <FontAwesomeIcon icon={faSave} />
-                  </Button>
-                  <Button
-                     variant='ghost'
-                     title='hover'
-                     _hover={{
-                        'backgroundColor': 'teal.500'
-                     }}
-                     onClick={() => {
-                        handlePopupClick()
-                     }}
-                  >
-                     <FontAwesomeIcon icon={faCopy} />
                   </Button>
                   <Button
                      variant='ghost'

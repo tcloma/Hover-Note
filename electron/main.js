@@ -111,7 +111,6 @@ ipcMain.on('get-child-data', () => {
       winId: childWindows.length - 1,
       data: childFile
    }
-   console.log(childDataRef)
    childWindows[childWindows.length - 1].webContents.send('return-child-data', childDataRef)
 })
 

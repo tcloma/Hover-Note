@@ -3,24 +3,17 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 // Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowMaximize, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
+import { faPaperPlane, faWindowMaximize, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
 import { faWindowMinimize, faXmark, faBars } from "@fortawesome/free-solid-svg-icons";
 import { Flex, HStack, Spacer, Button, Box, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, useDisclosure } from '@chakra-ui/react';
 
 const Titlebar = () => {
    // Local state definitions
    const [windowMaximize, setWindowMaximize] = useState(true)
-   const [menuClicked, setMenuClicked] = useState(false)
 
    // Local API definitions
-   const { isOpen, onOpen, onClose } = useDisclosure()
    const navigate = useNavigate()
    const titleBar = window.electron.titleBarApi
-
-   const handleMenuClick = () => {
-      setMenuClicked(true)
-      onOpen()
-   }
 
    return (
       <>
@@ -34,12 +27,17 @@ const Titlebar = () => {
                'WebkitAppRegion': 'drag'
             }}
          >
-            <Box onClick={handleMenuClick} fontSize='xl' color='teal.400' sx={{ 'WebkitAppRegion': 'no-drag' }}>
-               {menuClicked ?
-                  <FontAwesomeIcon icon={faXmark} />
-                  :
-                  <FontAwesomeIcon icon={faBars} />
-               }
+            <Box
+               fontSize='xl'
+               color='teal.100'
+               sx={{ 'WebkitAppRegion': 'no-drag' }}
+               _hover={{
+                  'color': 'teal.500',
+                  'fontSize': '2xl'
+               }}
+               transitionDuration='1s'
+            >
+               <FontAwesomeIcon icon={faPaperPlane} />
             </Box>
             <Spacer />
             <HStack h='100%' sx={{ 'WebkitAppRegion': 'no-drag' }}>
@@ -75,28 +73,6 @@ const Titlebar = () => {
                </Button>
             </HStack>
          </Flex>
-         <Drawer placement='left' isOpen={isOpen} size='xs'
-            onClose={() => {
-               onClose()
-               setMenuClicked(false)
-            }}>
-            <DrawerOverlay />
-            <DrawerContent backgroundColor='gray.800' color='whiteAlpha.900'>
-               <DrawerHeader borderBottomWidth='1px'>Nav Drawer</DrawerHeader>
-               <DrawerBody>
-                  <p onClick={() => {
-                     navigate('/')
-                     onClose()
-                  }}>Landing</p>
-                  <p onClick={() => {
-                     navigate('/home')
-                     onClose()
-                  }}>
-                     Home</p>
-                  <p>Some contents...</p>
-               </DrawerBody>
-            </DrawerContent>
-         </Drawer>
       </>
    )
 }
