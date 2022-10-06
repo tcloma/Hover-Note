@@ -77,7 +77,6 @@ ipcMain.on('minimize', () => {
 ipcMain.on('quit', (event, win) => {
    if (win !== undefined) {
       event.preventDefault()
-      console.log('Called quit on win: ', win)
       childWindows[win].close()
       childWindows[win] = null
    } else {
@@ -100,7 +99,6 @@ ipcMain.on('new-child-window', (event, noteId) => {
       },
    });
    childWindows.push(child)
-   console.log('Window arr length: ', childWindows.length)
    child.loadURL(`http://localhost:5173/sticky/${noteId}`);
    child.setAlwaysOnTop(true, 'screen')
 });
@@ -152,14 +150,16 @@ const isValid = (item) => {
 }
 
 const getDirContents = async () => {
+   let filesCounter = 1
    if (directory === undefined) return;
    const directoryContents = await fs.readdir(directory, { withFileTypes: true });
-   for (const [index, item] of directoryContents.entries()) {
+   for (const item of directoryContents) {
       if (isIgnored(item.name)) {
          if (item.isFile()) {
             if (isValid(item.name)) {
-               const fileContents = await readFileContents(item.name, index)
+               const fileContents = await readFileContents(item.name, filesCounter)
                filesCopy.push(fileContents)
+               filesCounter++
             }
          }
          else if (item.isDirectory()) {

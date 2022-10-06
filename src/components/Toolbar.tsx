@@ -13,15 +13,19 @@ type Props = {
    directory: string,
    setDirName: any,
    noteId: number,
-   setCurrentNoteId: any
+   setCurrentNoteId: any,
+   setDirFiles: any,
+   dirFiles: any
 }
 
-const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirName, setCurrentNoteId, noteId }: Props) => {
+const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirName, setCurrentNoteId, noteId, setDirFiles, dirFiles }: Props) => {
    const [formValue, setFormValue] = useState('')
    const initialRef = React.useRef(null)
    const finalRef = React.useRef(null)
    const navigate = useNavigate()
    const toast = useToast()
+
+   console.log(dirFiles)
 
 
    const splitDirName = name ? [...directory.split('\\'), name] : directory.split('\\')
@@ -40,12 +44,21 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
       setDirName(breadCrumbBreakPoint)
       processFiles()
       navigate('/home')
+      toast({
+         position: 'bottom-right',
+         status: 'warning',
+         title: 'File deleted',
+         isClosable: true
+      })
    }
 
    const handleNewFileClick = () => {
-      console.log(formValue)
       filesApi.createFile(formValue)
-      processFiles()
+      setDirFiles([[...dirFiles, {
+         id: dirFiles.length + 1,
+         name: formValue,
+         content: '# Hello File!'
+      }]])
       closeMe()
       toast({
          position: 'bottom-right',

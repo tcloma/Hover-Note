@@ -13,13 +13,15 @@ type Props = {
    name?: string,
    editorValue?: string,
    hasInitDir?: boolean,
-   setCurrentNoteId: any,
-   noteId: number,
+   setCurrentNoteId?: any,
+   noteId?: number,
+   setDirFiles: any,
+   dirFiles: any
 }
 
 // Make a reference to page to conditionally render stlying and tooblar
 
-const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue, noteId, setCurrentNoteId, hasInitDir }: Props) => {
+const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name, editorValue, noteId, setCurrentNoteId, hasInitDir, setDirFiles, dirFiles }: Props) => {
    const splitDirName = noteName ? [...directory.split('\\'), noteName] : directory.split('\\')
    const directoryApi = window.electron.directoryApi
    const navigate = useNavigate()
@@ -38,7 +40,6 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
             bgColor='gray.800' color='whiteAlpha.900'
             zIndex='overlay' pos='fixed'
             top='50px' left='1em'
-            // boxShadow='md'
             separator={<FontAwesomeIcon icon={faChevronRight} />}
          >
             {splitDirName.map((name, index) => {
@@ -46,9 +47,7 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
                const lastDir = index + 1 === splitDirName.length - 1
                return (
                   <BreadcrumbItem key={index + 1}>
-                     <BreadcrumbLink href='#' _hover={{
-                        'textDecoration': 'underline'
-                     }}
+                     <BreadcrumbLink href='#'
                         color={lastItem ? 'teal.300' : 'whiteAlpha.900'}
                         onClick={() => {
                            if (!lastItem) {
@@ -57,7 +56,8 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
                            if (lastDir) {
                               processFiles()
                            }
-                        }}>
+                        }}
+                     >
                         {name}
                      </BreadcrumbLink>
                   </BreadcrumbItem>
@@ -73,6 +73,8 @@ const BreadCrumbWrapper = ({ directory, setDirName, processFiles, noteName, name
             setDirName={setDirName}
             setCurrentNoteId={setCurrentNoteId}
             noteId={noteId}
+            setDirFiles={setDirFiles}
+            dirFiles={dirFiles}
          />
       </>
    )

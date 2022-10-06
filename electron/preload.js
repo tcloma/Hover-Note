@@ -29,6 +29,8 @@ contextBridge.exposeInMainWorld('electron', {
    },
    filesApi: {
       processDirectory() {
+         files.length = 0
+         folders.length = 0
          if (files.length > 0) return null;
          ipcRenderer.send('get-dir-contents');
          ipcRenderer.once('return-files', (event, filesArr) => {

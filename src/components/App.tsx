@@ -90,6 +90,7 @@ const App = () => {
                         setCurrentNoteId={setCurrentNoteId}
                         hasInitDir={hasInitDir}
                         processFiles={processFiles}
+                        setDirFiles={setDirFiles}
                      />}
                   />
                   <Route path='/note/:id' element={

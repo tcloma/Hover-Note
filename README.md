@@ -48,6 +48,7 @@
 - [ ] Resizable and draggable notes in home screen
 - [ ] Remembering note layout when app launches
 - [ ] Be able to link together and reference different notes
+- [ ] Rethink how you interact with file system and aquire file data
 
 
 
