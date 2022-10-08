@@ -138,13 +138,6 @@ const Note = ({ title, content, id, setCurrentNoteId, setDirFiles, dirFiles }: P
                />
                <MenuList backgroundColor='gray.800' color='whiteAlpha.900' border='2px' borderColor='teal.200'>
                   <MenuItem
-                     _focus={{ backgroundColor: 'gray.700', color: 'yellow.300' }}
-                     _hover={{ backgroundColor: 'gray.700', color: 'yellow.300' }}
-                     icon={<FontAwesomeIcon icon={faStar} />}
-                  >
-                     Favorite
-                  </MenuItem>
-                  <MenuItem
                      _focus={{ backgroundColor: 'gray.700' }}
                      _hover={{ backgroundColor: 'gray.700' }}
                      icon={<FontAwesomeIcon icon={faRedo} />}

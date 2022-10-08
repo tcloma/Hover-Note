@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Button, HStack, useToast, useDisclosure, useDisclosure as useMe, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter, FormControl, FormLabel, Input } from '@chakra-ui/react'
+import { Button, HStack, useToast, useDisclosure, useDisclosure as useMe, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter, FormControl, Box, Input } from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSave, faCopy, faTrash, faPlus, faPaperPlane, faStar } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -141,14 +141,12 @@ const Toolbar = ({ name, editorValue, isHome, processFiles, directory, setDirNam
             color='whiteAlpha.900'
          >
             {isHome ?
-               <>
-                  <Button onClick={imOpen} _hover={{ 'backgroundColor': 'teal.500' }} variant='ghost'>
+               <Box borderRadius='full' backgroundColor='teal.500'>
+                  <Button onClick={imOpen} _hover={{ 'backgroundColor': 'whiteAlpha.900', color: 'teal' }} variant='ghost' fontSize='3xl'>
                      <FontAwesomeIcon icon={faPlus} />
                   </Button>
-                  <Button onClick={imOpen} _hover={{ 'backgroundColor': 'teal.500', 'color': 'yellow.300' }} variant='ghost'>
-                     <FontAwesomeIcon icon={faStar} />
-                  </Button>
-               </>
+               </Box>
+
                :
                <>
                   <Button onClick={handlePopupClick} _hover={{ 'backgroundColor': 'teal.500' }} variant='ghost' title='hover'>
